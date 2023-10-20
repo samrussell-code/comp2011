@@ -2,5 +2,31 @@
 {%block content%}
 
 <h1>Home</h1>
-{{home.description}}
+<h2>{{home.description}}</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            {{home.expenditure_total}}
+        </div>
+        <div class="col-sm">
+            {{home.income_total}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            {{home.exp_inc_dif}}
+        </div>
+        <div class="col-sm">
+            {{home.optional_goal}}
+        </div>
+    </div>
+    {{home.null_money}}
+</div>
+
+
+
+
+
+
 {%endblock%}
