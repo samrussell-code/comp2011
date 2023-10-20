@@ -19,7 +19,8 @@
           <tr>
             <th scope="row">{{x}}</th>
             <td>{{expenditures_list[x-1].name}}</td>
-            <td>£{{expenditures_list[x-1].amount}}</td>
+            <td>£{{'%0.2f'|format(expenditures_list[x-1].amount|float)}}</td>
+            <!--formats the expenditures to GBP form-->
           </tr>
           {% endfor %}
         </tbody>
