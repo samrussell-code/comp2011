@@ -23,9 +23,13 @@ def home():
 
 @app.route('/expenditures', methods =['GET','POST'])
 def expenditures():
+    #grab the number of entries in db
+    with app.app_context():
+        expenditures_list=db.session.query(models.Expenditure).all()
+    expenditures_count = len(expenditures_list)
     expenditures={'description':'This is expenditures!',
           'expenditure_table':"This should be a table of expenditures"}
-    return render_template('expenditures.html', title='Expenditures', expenditures=expenditures) #this is the base location
+    return render_template('expenditures.html', title='Expenditures', expenditures_list = expenditures_list,expenditures=expenditures, expenditures_count=expenditures_count) #this is the base location
 
 @app.route('/incomes', methods =['GET','POST'])
 def incomes():
