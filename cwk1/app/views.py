@@ -1,5 +1,5 @@
 from flask import render_template, flash
-from app import app
+from app import app, db, models
 from .forms import CalculatorForm, MoneyForm
 
 @app.route('/home', methods =['GET','POST'])
@@ -37,7 +37,17 @@ def incomes():
 def form():
     databaseform = MoneyForm()
     if databaseform.validate_on_submit():
-        flash('Received form data.')
-    form={'description':'This is the expenditure income form!',
-          'inputfield':"This should be an input box for the form"}
+        flash('Received form data. %s'%(databaseform.type.data))
+        if(databaseform.type.data=="Income"):
+            entry = models.Income(name=databaseform.name.data, amount=databaseform.amount.data)
+        else:
+            entry = models.Expenditure(name=databaseform.name.data, amount=databaseform.amount.data)
+        with app.app_context():
+            try:
+                db.session.add(entry)
+                db.session.commit()
+            except:
+                flash("The name of this entry matches another entry in the table.")
+        #now we add databaseform.name.data/amount to the correct table for type
+    form={'description':'This is the expenditure income form!'}
     return render_template('form.html', title='Form', form=form, databaseform=databaseform) #this is the base location
