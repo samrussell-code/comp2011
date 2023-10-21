@@ -7,7 +7,8 @@ def home():
 
     goal_set=False
     goal_name=""
-    goal_amount=0.0
+    goal_amount=-1.0
+    goal_progress=-1.0
 
     with app.app_context():
         expenditure_query=db.session.query(models.Expenditure.amount).all()
@@ -22,12 +23,16 @@ def home():
        expenditure_total+=float(x[0])
     for x in income_query:
         income_total+=float(x[0])
-    exp_inc_dif = abs(income_total-expenditure_total)
+    exp_inc_dif = income_total-expenditure_total
+    if goal_amount != -1.0:
+        #goal exists
+        goal_progress=max(round(100*(exp_inc_dif/goal_amount),2),0)
+        #can go over 100 but the jinja if handles it
     home={'description':'Welcome to this application. We are here to set your goals!',
           'income_total':'This is your income total.',
           'optional_goal':'You have no optional goal.',
           'null_money':'This is to be shown if there is nothing to report.'}
-    return render_template('home.html', title='Home', home=home, expenditure_total=expenditure_total, income_total=income_total, exp_inc_dif=exp_inc_dif, goal_name=goal_name, goal_amount=goal_amount, goal_set=goal_set) #this is the base location
+    return render_template('home.html', title='Home', home=home, expenditure_total=expenditure_total, income_total=income_total, exp_inc_dif=exp_inc_dif, goal_name=goal_name, goal_amount=goal_amount, goal_set=goal_set, goal_progress=goal_progress) #this is the base location
 
 # @app.route('/calculator', methods=['GET', 'POST'])
 # def calculator():

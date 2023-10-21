@@ -5,7 +5,12 @@
 <h2>{{home.description}}</h2>
 
 <div class="container">
-    <div class="row">
+    {% if expenditure_total==0 and income_total==0 %}
+    <div class="col-sm justify-content-center">
+        {{home.null_money}}
+    </div>
+    {% else %}
+    <div class="row ">
         <div class="col-sm">
             <td>Your expenditure total is: £{{'%0.2f'|format(expenditure_total|float)}}</td>
         </div>
@@ -17,15 +22,30 @@
         <div class="col-sm">
             <td>The difference between your income and your expenditures is: £{{'%0.2f'|format(exp_inc_dif|float)}}</td>
         </div>
+        {% endif %}
         <div class="col-sm">
             {% if goal_set %}
-            <h3>{{ goal_name }} <span class="badge bg-info"> £{{'%0.2f'|format(goal_amount|float)}} </span></h3>
+            <h3>Goal: {{ goal_name }}</h3> 
+                <h3>
+                <div class="row justify-content-center">
+                    <span class="badge bg-info"> £{{'%0.2f'|format(goal_amount|float)}} </span>
+                </div>
+                </h3>
+            <div class="row">
+                <body>
+                    {% if goal_progress > 100 %}
+                    You have reached your goal!
+                    {% else %}
+                    You are {{goal_progress}}% of the way to your goal!
+                    {% endif %}
+                </body>
+            </div>
             {% else %}
             {{home.optional_goal}}
             {% endif %}
         </div>
     </div>
-    {{home.null_money}}
+    
 </div>
 
 
