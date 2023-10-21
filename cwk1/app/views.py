@@ -1,4 +1,4 @@
-from flask import render_template, flash
+from flask import redirect, render_template, flash, url_for
 from app import app, db, models
 from .forms import MoneyForm, GoalForm, SubmitForm
 
@@ -117,3 +117,21 @@ def goal():
         goal_set=False
     
     return render_template('goal.html', title='Goal', name=name, amount=amount, goalform=goalform,goal_set=goal_set,deletegoal=deletegoal) #this is the base location
+
+@app.route('/delete_income/<int:id>', methods=['POST'])
+def delete_income(id):
+    with app.app_context():
+        income_to_delete = models.Income.query.get(id)
+        if income_to_delete:
+            db.session.delete(income_to_delete)
+            db.session.commit()
+    return redirect(url_for('incomes'))
+
+@app.route('/delete_expenditure/<int:id>', methods=['POST'])
+def delete_expenditure(id):
+    with app.app_context():
+        expenditure_to_delete = models.Expenditure.query.get(id)
+        if expenditure_to_delete:
+            db.session.delete(expenditure_to_delete)
+            db.session.commit()
+    return redirect(url_for('expenditures'))

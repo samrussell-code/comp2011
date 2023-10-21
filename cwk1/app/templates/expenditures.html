@@ -12,6 +12,11 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Amount</th>
+            <th scope="col">
+                <div class="row justify-content-md-center">
+                Settings
+                </div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -21,6 +26,9 @@
             <td>{{expenditures_list[x-1].name}}</td>
             <td>£{{'%0.2f'|format(expenditures_list[x-1].amount|float)}}</td>
             <!--formats the expenditures to GBP form-->
+            <td><div class="row justify-content-center"><form method="post" action="{{ url_for('delete_expenditure', id=expenditures_list[x-1].id) }}">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+            </form></div></td>
           </tr>
           {% endfor %}
         </tbody>
