@@ -69,18 +69,20 @@ def form():
 @app.route('/goal', methods =['GET','POST'])
 def goal():
     goalform = GoalForm()
-    if goalform.validate_on_submit():
-        flash('Received form data. %s'%(goalform.type.data))
-        if(goalform.type.data=="Income"):
-            entry = models.Income(name=goalform.name.data, amount=goalform.amount.data)
+    with app.app_context():
+        if db.session.query(models.Goal).count() == 0:
+            goal_set=False 
         else:
-            entry = models.Expenditure(name=goalform.name.data, amount=goalform.amount.data)
+            goal_set=True
+            goal = db.session.query(models.Goal).all()[0]
+    if goalform.validate_on_submit():
+        flash('Received form data. %s'%(goalform.name.data))
+        entry = models.Goal(name=goalform.name.data, amount=goalform.amount.data)
         with app.app_context():
-            try:
+            if not goal_set:
                 db.session.add(entry)
                 db.session.commit()
-            except:
-                flash("The name of this entry matches another entry in the table.")
+            else:
+                flash("You already have a goal set!")
         #now we add databaseform.name.data/amount to the correct table for type
-    form={'description':'This is the goal form!'}
-    return render_template('goal.html', title='Form', goal=goal, goalform=goalform) #this is the base location
+    return render_template('goal.html', title='Form', goal=goal, goalform=goalform,goal_set=goal_set) #this is the base location

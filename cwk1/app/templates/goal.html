@@ -2,10 +2,9 @@
 {%block content%}
 
 <h1>Goal</h1>
-<h2>{{goal.description}}</h2>
-
 <div class="container">
     <div class="row justify-content-center">
+        {% if goal_set == False %}
         <form action="" method="post" name="goalform">
             {{goalform.hidden_tag()}}
             {{goalform.name(class_='form-control')}}
@@ -22,6 +21,9 @@
             {% endfor %}
             <p><input type="submit" class="btn btn-primary" value="Submit"></p>
         </form>
+        {% else %}
+        <h3>{{ goal.name }} <span class="badge bg-info"> £{{'%0.2f'|format(goal.amount|float)}} </span></h3>
+        {% endif %}
     </div>
 </div>
 
