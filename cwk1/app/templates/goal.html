@@ -1,0 +1,33 @@
+{% extends "base.html" %}]
+{%block content%}
+
+<h1>Goal</h1>
+<h2>{{goal.description}}</h2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <form action="" method="post" name="goalform">
+            {{goalform.hidden_tag()}}
+            {{goalform.name(class_='form-control')}}
+            {% for error in goalform.name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+            {% endfor %}
+            {{ goalform.amount(class_='form-control')}}
+            {% for error in goalform.amount.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+            {% endfor %}
+            <p><input type="submit" class="btn btn-primary" value="Submit"></p>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+{%endblock%}

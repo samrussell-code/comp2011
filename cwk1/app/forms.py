@@ -10,3 +10,7 @@ class MoneyForm(FlaskForm):
     type = SelectField('Transaction Type',choices=["Income","Expenditure"])
     name = TextAreaField('Name',validators=[DataRequired()])
     amount = FloatField('Amount',validators=[DataRequired(),NumberRange(min=0.01, max=9.0e12)])
+
+class GoalForm(FlaskForm):
+    name = TextAreaField('Name')
+    amount = FloatField('Amount',validators=[DataRequired(),NumberRange(min=0.01, max=9.0e12)])    

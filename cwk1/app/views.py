@@ -1,16 +1,24 @@
 from flask import render_template, flash
 from app import app, db, models
-from .forms import CalculatorForm, MoneyForm
+from .forms import MoneyForm, GoalForm
 
 @app.route('/home', methods =['GET','POST'])
 def home():
+    with app.app_context():
+        expenditure_query=db.session.query(models.Expenditure.amount).all()
+        income_query=db.session.query(models.Income.amount).all()
+    expenditure_total=0
+    income_total=0
+    for x in expenditure_query:
+       expenditure_total+=float(x[0])
+    for x in income_query:
+        income_total+=float(x[0])
+    exp_inc_dif = abs(income_total-expenditure_total)
     home={'description':'Welcome to this application. We are here to set your goals!',
-          'expenditure_total':'This is your total expenditures.',
           'income_total':'This is your income total.',
-          'exp_inc_dif':'This is the difference between your income and your expenditures.',
           'optional_goal':'This is your optional goal.',
           'null_money':'This is to be shown if there is nothing to report.'}
-    return render_template('home.html', title='Home', home=home) #this is the base location
+    return render_template('home.html', title='Home', home=home, expenditure_total=expenditure_total, income_total=income_total, exp_inc_dif=exp_inc_dif) #this is the base location
 
 # @app.route('/calculator', methods=['GET', 'POST'])
 # def calculator():
@@ -57,3 +65,22 @@ def form():
         #now we add databaseform.name.data/amount to the correct table for type
     form={'description':'This is the expenditure income form!'}
     return render_template('form.html', title='Form', form=form, databaseform=databaseform) #this is the base location
+
+@app.route('/goal', methods =['GET','POST'])
+def goal():
+    goalform = GoalForm()
+    if goalform.validate_on_submit():
+        flash('Received form data. %s'%(goalform.type.data))
+        if(goalform.type.data=="Income"):
+            entry = models.Income(name=goalform.name.data, amount=goalform.amount.data)
+        else:
+            entry = models.Expenditure(name=goalform.name.data, amount=goalform.amount.data)
+        with app.app_context():
+            try:
+                db.session.add(entry)
+                db.session.commit()
+            except:
+                flash("The name of this entry matches another entry in the table.")
+        #now we add databaseform.name.data/amount to the correct table for type
+    form={'description':'This is the goal form!'}
+    return render_template('goal.html', title='Form', goal=goal, goalform=goalform) #this is the base location
