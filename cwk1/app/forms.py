@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField,FloatField, TextAreaField, SelectField
+from wtforms import IntegerField,FloatField, TextAreaField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 
 class CalculatorForm(FlaskForm):
@@ -13,4 +13,7 @@ class MoneyForm(FlaskForm):
 
 class GoalForm(FlaskForm):
     name = TextAreaField('Name')
-    amount = FloatField('Amount',validators=[DataRequired(),NumberRange(min=0.01, max=9.0e12)])    
+    amount = FloatField('Amount',validators=[DataRequired(),NumberRange(min=0.01, max=9.0e12)]) 
+
+class SubmitForm(FlaskForm):
+    submit = SubmitField('submit')

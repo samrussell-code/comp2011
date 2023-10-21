@@ -22,7 +22,15 @@
             <p><input type="submit" class="btn btn-primary" value="Submit"></p>
         </form>
         {% else %}
-        <h3>{{ goal.name }} <span class="badge bg-info"> £{{'%0.2f'|format(goal.amount|float)}} </span></h3>
+        <h3>{{ name }} <span class="badge bg-info"> £{{'%0.2f'|format(amount|float)}} </span></h3>
+        <div class="container">
+            <div class="row justify-content-center">
+                <form action="" method="post" name="deletegoal">
+                    {{deletegoal.hidden_tag()}}
+                    <p><input type="submit" class="btn btn-outline-primary" value="Delete Goal"></p>    
+                </form>
+            </div>
+        </div>
         {% endif %}
     </div>
 </div>

@@ -1,12 +1,21 @@
 from flask import render_template, flash
 from app import app, db, models
-from .forms import MoneyForm, GoalForm
+from .forms import MoneyForm, GoalForm, SubmitForm
 
 @app.route('/home', methods =['GET','POST'])
 def home():
+
+    goal_set=False
+    goal_name=""
+    goal_amount=0.0
+
     with app.app_context():
         expenditure_query=db.session.query(models.Expenditure.amount).all()
         income_query=db.session.query(models.Income.amount).all()
+        if db.session.query(models.Goal).count()!=0:
+            goal_set=True
+            goal = db.session.query(models.Goal).first()
+            goal_name, goal_amount = goal.name, goal.amount
     expenditure_total=0
     income_total=0
     for x in expenditure_query:
@@ -16,9 +25,9 @@ def home():
     exp_inc_dif = abs(income_total-expenditure_total)
     home={'description':'Welcome to this application. We are here to set your goals!',
           'income_total':'This is your income total.',
-          'optional_goal':'This is your optional goal.',
+          'optional_goal':'You have no optional goal.',
           'null_money':'This is to be shown if there is nothing to report.'}
-    return render_template('home.html', title='Home', home=home, expenditure_total=expenditure_total, income_total=income_total, exp_inc_dif=exp_inc_dif) #this is the base location
+    return render_template('home.html', title='Home', home=home, expenditure_total=expenditure_total, income_total=income_total, exp_inc_dif=exp_inc_dif, goal_name=goal_name, goal_amount=goal_amount, goal_set=goal_set) #this is the base location
 
 # @app.route('/calculator', methods=['GET', 'POST'])
 # def calculator():
@@ -69,20 +78,37 @@ def form():
 @app.route('/goal', methods =['GET','POST'])
 def goal():
     goalform = GoalForm()
+    deletegoal = SubmitForm()
+    goal = models.Goal()
+    name =""
+    amount=0.0
+
     with app.app_context():
         if db.session.query(models.Goal).count() == 0:
             goal_set=False 
         else:
             goal_set=True
-            goal = db.session.query(models.Goal).all()[0]
-    if goalform.validate_on_submit():
-        flash('Received form data. %s'%(goalform.name.data))
+            goal = db.session.query(models.Goal).first()
+            name, amount = goal.name, goal.amount
+
+    if goalform.name.data and goalform.validate_on_submit():
         entry = models.Goal(name=goalform.name.data, amount=goalform.amount.data)
         with app.app_context():
             if not goal_set:
                 db.session.add(entry)
                 db.session.commit()
+                name, amount = goalform.name.data, goalform.amount.data
             else:
                 flash("You already have a goal set!")
-        #now we add databaseform.name.data/amount to the correct table for type
-    return render_template('goal.html', title='Form', goal=goal, goalform=goalform,goal_set=goal_set) #this is the base location
+        goal_set=True
+        
+
+    # 2 forms means extra validation is required to differentiate
+    # which one was submitted
+    elif not goalform.amount.data and deletegoal.validate_on_submit():
+        with app.app_context():
+            db.session.delete(goal)
+            db.session.commit()
+        goal_set=False
+    
+    return render_template('goal.html', title='Goal', name=name, amount=amount, goalform=goalform,goal_set=goal_set,deletegoal=deletegoal) #this is the base location

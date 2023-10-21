@@ -18,7 +18,11 @@
             <td>The difference between your income and your expenditures is: £{{'%0.2f'|format(exp_inc_dif|float)}}</td>
         </div>
         <div class="col-sm">
+            {% if goal_set %}
+            <h3>{{ goal_name }} <span class="badge bg-info"> £{{'%0.2f'|format(goal_amount|float)}} </span></h3>
+            {% else %}
             {{home.optional_goal}}
+            {% endif %}
         </div>
     </div>
     {{home.null_money}}
