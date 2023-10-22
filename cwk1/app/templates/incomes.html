@@ -25,19 +25,39 @@
             <th scope="row">{{x}}</th>
             <td>{{incomes_list[x-1].name}}</td>
             <td>£{{'%0.2f'|format(incomes_list[x-1].amount|float)}}</td>
-            <td><div class="row justify-content-center"><form method="post" action="{{ url_for('delete_income', id=incomes_list[x-1].id) }}">
-              <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-            </form></div></td>
-            <!--formats the expenditures to GBP form-->
+            <td>
+              <div class="row justify-content-center">
+                  <form method="post" action="{{ url_for('modify_income', id=incomes_list[x-1].id) }}" class="mr-1">
+                      <button type="submit" class="btn btn-outline-dark btn-sm">Modify</button>
+                  </form>
+                  <form method="post" action="{{ url_for('delete_income', id=incomes_list[x-1].id) }}" class="mr-1">
+                      <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                  </form>
+              </div>
+          </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
+      <div class="card card-body">
+        <form method="post" action="{{ url_for('modify_income', id=incomes_list[0].id) }}">
+            {{ modify_form.hidden_tag() }}  <!-- Include hidden fields for CSRF protection -->
+            <div class="mb-3">
+              <tr>
+                Transaction ID
+              </tr>
+                {{ modify_form.id(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ modify_form.name.label }}
+                {{ modify_form.name(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ modify_form.amount.label }}
+                {{ modify_form.amount(class="form-control") }}
+            </div>
+            {{ modify_form.submit(class="btn btn-primary") }}
+        </form>
+        </div>
 </div>
-
-
-
-
-
-
 {%endblock%}

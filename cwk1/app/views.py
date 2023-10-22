@@ -1,6 +1,6 @@
-from flask import redirect, render_template, flash, url_for
+from flask import redirect, render_template, flash, request, url_for
 from app import app, db, models
-from .forms import MoneyForm, GoalForm, SubmitForm
+from .forms import ModifyIncomeForm, MoneyForm, GoalForm, SubmitForm
 
 @app.route('/home', methods =['GET','POST'])
 def home():
@@ -34,15 +34,6 @@ def home():
           'null_money':'This is to be shown if there is nothing to report.'}
     return render_template('home.html', title='Home', home=home, expenditure_total=expenditure_total, income_total=income_total, exp_inc_dif=exp_inc_dif, goal_name=goal_name, goal_amount=goal_amount, goal_set=goal_set, goal_progress=goal_progress) #this is the base location
 
-# @app.route('/calculator', methods=['GET', 'POST'])
-# def calculator():
-#     form = CalculatorForm()
-#     if form.validate_on_submit():
-#         flash('Succesfully received form data. %s + %s  = %s'%(form.number1.data, form.number2.data, form.number1.data+form.number2.data))
-#     return render_template('calculator.html',
-#                            title='Calculator',
-#                            form=form)
-
 @app.route('/expenditures', methods =['GET','POST'])
 def expenditures():
     #grab the number of entries in db
@@ -55,11 +46,14 @@ def expenditures():
 
 @app.route('/incomes', methods =['GET','POST'])
 def incomes():
+    modify_form=ModifyIncomeForm()
     with app.app_context():
         incomes_list=db.session.query(models.Income).all()
+    for x in incomes_list:
+        modify_form.id.choices.append(x.id)
     incomes_count = len(incomes_list)
     incomes={'description':'This is incomes!'}
-    return render_template('incomes.html', title='Incomes',incomes_list = incomes_list, incomes_count=incomes_count ,incomes=incomes) #this is the base location
+    return render_template('incomes.html', title='Incomes',incomes_list = incomes_list, incomes_count=incomes_count ,incomes=incomes, modify_form=modify_form) #this is the base location
 
 @app.route('/form', methods =['GET','POST'])
 def form():
@@ -135,3 +129,17 @@ def delete_expenditure(id):
             db.session.delete(expenditure_to_delete)
             db.session.commit()
     return redirect(url_for('expenditures'))
+
+@app.route('/modify_income/<int:id>', methods=['POST'])
+def modify_income(id):
+    with app.app_context():
+        income_to_modify = models.Income.query.get(id)
+        if income_to_modify:
+            if request.method == 'POST':
+                new_name = request.form.get('name')
+                new_amount = request.form.get('amount')
+                # Update the income entry with the new data
+                income_to_modify.name = new_name
+                income_to_modify.amount = new_amount
+                db.session.commit()
+    return redirect(url_for('incomes'))
