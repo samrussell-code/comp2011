@@ -1,8 +1,16 @@
 {% extends "base.html" %}]
 {%block content%}
 
-<h1>Home</h1>
-<h2>{{home.description}}</h2>
+<div class="flex-row">
+    <div class="card bg-info text-center">
+    <h1>Home</h1>
+    <div class="card">
+        <div class="flex-row"></div>
+        <h3>{{home.description}}</h3>
+        </div>
+    </div>
+    </div>
+    </div>
 
 <div class="container">
     {% if expenditure_total==0 and income_total==0 %}
@@ -27,18 +35,23 @@
             {% if goal_set %}
             <h3>Goal: {{ goal_name }}</h3> 
                 <h3>
-                <div class="row justify-content-center">
+                <div class="col-6">
                     <span class="badge bg-info"> £{{'%0.2f'|format(goal_amount|float)}} </span>
                 </div>
                 </h3>
-            <div class="row">
+            <div class="row-6">
                 <body>
-                    {% if goal_progress > 100 %}
+                    {% if goal_progress == 100 %}
                     You have reached your goal!
                     {% else %}
                     You are {{goal_progress}}% of the way to your goal!
                     {% endif %}
                 </body>
+            </div>
+            <div class="col-6">
+                <div class="progress">
+                    <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: {{goal_progress}}%" aria-valuenow={{goal_progress}} aria-valuemin="0" aria-valuemax="100">{{goal_progress}}%</div>
+                </div>                  
             </div>
             {% else %}
             {{home.optional_goal}}

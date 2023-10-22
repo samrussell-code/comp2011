@@ -1,12 +1,21 @@
 {% extends "base.html" %}]
 {%block content%}
 
-<h1>Incomes</h1>
-<h2>{{incomes.description}}</h2>
+<div class="flex-row">
+  <div class="card bg-info text-center">
+  <h1>Incomes</h1>
+  <div class="card">
+      <div class="flex-row"></div>
+      <h3>{{incomes.description}}</h3>
+      </div>
+  </div>
+  </div>
+  </div>
 
+{% if incomes_count>0 %}
 <div class="container">
     <table class="table table-hover">
-        <caption>Incomes</caption>
+        <caption>List of incomes</caption>
         <thead class="table-dark">
           <tr>
             <th scope="col">#</th>
@@ -27,9 +36,6 @@
             <td>£{{'%0.2f'|format(incomes_list[x-1].amount|float)}}</td>
             <td>
               <div class="row justify-content-center">
-                  <form method="post" action="{{ url_for('modify_income', id=incomes_list[x-1].id) }}" class="mr-1">
-                      <button type="submit" class="btn btn-outline-dark btn-sm">Modify</button>
-                  </form>
                   <form method="post" action="{{ url_for('delete_income', id=incomes_list[x-1].id) }}" class="mr-1">
                       <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                   </form>
@@ -39,8 +45,11 @@
           {% endfor %}
         </tbody>
       </table>
+      <div class="card-header border-dark">
+        <h3>Modify Incomes:</h3>
+      </div>
       <div class="card card-body">
-        <form method="post" action="" name="goalform">
+        <form method="post" action="" name="incomeform">
             {{ modify_form.hidden_tag() }}  <!-- Include hidden fields for CSRF protection -->
             <div class="mb-3">
               <tr>
@@ -75,4 +84,14 @@
         </form>
         </div>
 </div>
+{% else %}
+<div class="container">
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <h3>You have no incomes.</h3>
+        </div>
+
+    </div>
+</div>
+{%endif%}
 {%endblock%}

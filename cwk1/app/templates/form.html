@@ -1,33 +1,73 @@
 {% extends "base.html" %}]
 {%block content%}
 
+<div class="flex-row">
+<div class="card bg-info text-center">
 <h1>Incomes and Expenditures</h1>
-<h2>{{form.description}}</h2>
+<div class="card">
+    <div class="flex-row"></div>
+    <h3>{{form.description}}</h3>
+    </div>
+</div>
+</div>
+</div>
 
 <div class="container">
     <div class="row justify-content-center">
+        <div class="container">
+        <div class="row justify-content-center">
+        <h3>Transaction Type</h3>
+        </div>
+        </div>
+        <div class="row">
         <form action="" method="post" name="databaseform">
             {{databaseform.hidden_tag()}}
-            {{databaseform.type(class_='form-control')}}
+            {% for subfield in databaseform.type %}
+            <div class="row justify-content-center">
+            <div class="col-10 justify-content-center">
+                <td> {{subfield.label(class_="form-control")}} </td>
+            </div>
+            <div class="flex-fill justify-content-center">
+                <td>{{subfield(class_="form-control")}}</td>
+            </div>
+            </div>
+            {% endfor %}
             {% for error in databaseform.type.errors %}
             <div class="alert alert-danger" role="alert">
                 [{{error}}]
             </div>
             {% endfor %}
+            <div class="container">
+                <div class="row justify-content-center">
+                <h3>Transaction Name</h3>
+                </div>
+                </div>
             {{databaseform.name(class_='form-control')}}
             {% for error in databaseform.name.errors %}
                 <div class="alert alert-danger" role="alert">
                     [{{error}}]
                 </div>
             {% endfor %}
+            <div class="container">
+                <div class="row justify-content-center">
+                <h3>Transaction Amount</h3>
+                </div>
+                </div>
+            <div class="container">
             {{ databaseform.amount(class_='form-control')}}
             {% for error in databaseform.amount.errors %}
                 <div class="alert alert-danger" role="alert">
                     [{{error}}]
                 </div>
             {% endfor %}
-            <p><input type="submit" class="btn btn-primary btn-block" value="Submit"></p>
+            <div class="row">
+                <div class="col">
+                    <p><input type="submit" class="btn btn-primary btn-block" value="Submit"></p>
+                </div>
+            </div>
+        </div>
         </form>
+    </div>
     </div>
 </div>
 
