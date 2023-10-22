@@ -57,7 +57,7 @@ def expenditures():
                 db.session.commit()
                 return redirect(url_for('expenditures'))
             except:
-                flash("Name is not unique!")
+                flash("Transaction names must be unique!",'error')
     # this is the base location
     return render_template('expenditures.html', title='Expenditures', expenditures_list=expenditures_list, expenditures=expenditures, expenditures_count=expenditures_count, modify_form=modify_form,)
 
@@ -81,7 +81,7 @@ def incomes():
                 db.session.commit()
                 return redirect(url_for('incomes'))
             except:
-                flash("Name is not unique!")
+                flash("Transaction names must be unique!",'error')
     # this is the base location
     return render_template('incomes.html', title='Incomes', incomes_list=incomes_list, incomes_count=incomes_count, incomes=incomes, modify_form=modify_form)
 
@@ -90,7 +90,7 @@ def incomes():
 def form():
     databaseform = MoneyForm()
     if databaseform.validate_on_submit():
-        flash('Received form data. %s' % (databaseform.type.data))
+        flash('Uploading data... %s' % (databaseform.type.data),'error')
         if (databaseform.type.data == "Income"):
             entry = models.Income(
                 name=databaseform.name.data, amount=databaseform.amount.data)
@@ -102,7 +102,7 @@ def form():
                 db.session.add(entry)
                 db.session.commit()
             except:
-                flash("The name of this entry matches another entry in the table.")
+                flash("The name of this entry matches another entry in the table.",'error')
         # now we add databaseform.name.data/amount to the correct table for type
     form = {'description': 'Here you can upload records of your incomes and expenditures.'}
     # this is the base location
@@ -126,6 +126,7 @@ def goal():
             name, amount = goal.name, goal.amount
 
     if goalform.name.data and goalform.validate_on_submit():
+        flash("Setting this goal...",'info')
         entry = models.Goal(name=goalform.name.data,
                             amount=goalform.amount.data)
         with app.app_context():
@@ -134,7 +135,7 @@ def goal():
                 db.session.commit()
                 name, amount = goalform.name.data, goalform.amount.data
             else:
-                flash("You already have a goal set!")
+                flash("You already have a goal set!",'error')
         goal_set = True
 
     # 2 forms means extra validation is required to differentiate
