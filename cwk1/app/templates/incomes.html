@@ -22,7 +22,7 @@
         <tbody>
           {% for x in range(1,incomes_count+1) %}
           <tr>
-            <th scope="row">{{x}}</th>
+            <th scope="row">{{incomes_list[x-1].id}}</th>
             <td>{{incomes_list[x-1].name}}</td>
             <td>£{{'%0.2f'|format(incomes_list[x-1].amount|float)}}</td>
             <td>
@@ -40,23 +40,38 @@
         </tbody>
       </table>
       <div class="card card-body">
-        <form method="post" action="{{ url_for('modify_income', id=incomes_list[0].id) }}">
+        <form method="post" action="" name="goalform">
             {{ modify_form.hidden_tag() }}  <!-- Include hidden fields for CSRF protection -->
             <div class="mb-3">
               <tr>
-                Transaction ID
               </tr>
+                {{ modify_form.id.label }}
                 {{ modify_form.id(class="form-control") }}
+                {% for error in modify_form.id.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+                {% endfor %}
             </div>
             <div class="mb-3">
                 {{ modify_form.name.label }}
                 {{ modify_form.name(class="form-control") }}
+                {% for error in modify_form.name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+                {% endfor %}
             </div>
             <div class="mb-3">
                 {{ modify_form.amount.label }}
                 {{ modify_form.amount(class="form-control") }}
+                {% for error in modify_form.amount.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+                {% endfor %}
             </div>
-            {{ modify_form.submit(class="btn btn-primary") }}
+            <p><input type="submit" class="btn btn-primary" value="Submit"></p>
         </form>
         </div>
 </div>

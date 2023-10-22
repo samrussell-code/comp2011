@@ -53,7 +53,16 @@ def incomes():
         modify_form.id.choices.append(x.id)
     incomes_count = len(incomes_list)
     incomes={'description':'This is incomes!'}
-    return render_template('incomes.html', title='Incomes',incomes_list = incomes_list, incomes_count=incomes_count ,incomes=incomes, modify_form=modify_form) #this is the base location
+    if (modify_form.name.data or modify_form.amount.data) and modify_form.validate_on_submit():
+        with app.app_context():
+            income_entry=db.session.query(models.Income).filter_by(id=modify_form.id.data).first()
+            income_entry.name=income_entry.name if not modify_form.name.data else modify_form.name.data
+            income_entry.amount=income_entry.amount if not modify_form.amount.data else modify_form.amount.data
+            try:
+                db.session.commit()
+            except:
+                flash("Name is not unique!")
+    return render_template('incomes.html', title='Incomes',incomes_list = incomes_list, incomes_count=incomes_count ,incomes=incomes, modify_form=modify_form, id=modify_form.id.data) #this is the base location
 
 @app.route('/form', methods =['GET','POST'])
 def form():
@@ -133,13 +142,8 @@ def delete_expenditure(id):
 @app.route('/modify_income/<int:id>', methods=['POST'])
 def modify_income(id):
     with app.app_context():
-        income_to_modify = models.Income.query.get(id)
-        if income_to_modify:
-            if request.method == 'POST':
-                new_name = request.form.get('name')
-                new_amount = request.form.get('amount')
-                # Update the income entry with the new data
-                income_to_modify.name = new_name
-                income_to_modify.amount = new_amount
-                db.session.commit()
+        income_to_delete = models.Expenditure.query.get(id)
+        if income_to_delete:
+            db.session.delete(income_to_delete)
+            db.session.commit()
     return redirect(url_for('incomes'))
