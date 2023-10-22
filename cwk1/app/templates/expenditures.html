@@ -6,7 +6,7 @@
     <h1>Expenditures</h1>
     <div class="card">
         <div class="flex-row"></div>
-        <h3>{{expenditures.description}}</h3>
+        <h2>{{expenditures.description}}</h2>
         </div>
     </div>
     </div>
@@ -60,7 +60,7 @@
             </div>
             <div class="mb-3">
                 {{ modify_form.name.label }}
-                {{ modify_form.name(class="form-control") }}
+                {{ modify_form.name(class="form-control", placeholder='unchanged')}}
                 {% for error in modify_form.name.errors %}
                 <div class="alert alert-danger" role="alert">
                     [{{error}}]
@@ -69,14 +69,14 @@
             </div>
             <div class="mb-3">
                 {{ modify_form.amount.label }}
-                {{ modify_form.amount(class="form-control") }}
+                {{ modify_form.amount(class="form-control", placeholder='unchanged')}}
                 {% for error in modify_form.amount.errors %}
                 <div class="alert alert-danger" role="alert">
                     [{{error}}]
                 </div>
                 {% endfor %}
             </div>
-            <p><input type="submit" class="btn btn-primary" value="Submit"></p>
+            <p><input type="submit" class="btn btn-primary bg-dark" value="Submit"></p>
         </form>
     </div>
 </div>
