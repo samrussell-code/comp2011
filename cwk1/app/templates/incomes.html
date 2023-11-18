@@ -1,0 +1,97 @@
+{% extends "base.html" %}]
+{%block content%}
+
+<div class="flex-row">
+  <div class="card bg-info text-center">
+  <h1>Incomes</h1>
+  <div class="card">
+      <div class="flex-row"></div>
+      <h2>{{incomes.description}}</h2>
+      </div>
+  </div>
+  </div>
+  </div>
+
+{% if incomes_count>0 %}
+<div class="container">
+    <table class="table table-hover">
+        <caption>List of incomes</caption>
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Amount</th>
+            <th scope="col">
+              <div class="row justify-content-md-center">
+                Settings
+                </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for x in range(1,incomes_count+1) %}
+          <tr>
+            <th scope="row">{{incomes_list[x-1].id}}</th>
+            <td>{{incomes_list[x-1].name}}</td>
+            <td>£{{'%0.2f'|format(incomes_list[x-1].amount|float)}}</td>
+            <td>
+              <div class="row justify-content-center">
+                  <form method="post" action="{{ url_for('delete_income', id=incomes_list[x-1].id) }}" class="mr-1">
+                      <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                  </form>
+              </div>
+          </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="card-header border-dark">
+        <h3>Modify Incomes:</h3>
+      </div>
+      <div class="card card-body">
+        <form method="post" action="" name="incomeform">
+            {{ modify_form.hidden_tag() }}
+            <div class="mb-3">
+              <tr>
+              </tr>
+                {{ modify_form.id.label }}
+                {{ modify_form.id(class="form-control") }}
+                {% for error in modify_form.id.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ modify_form.name.label }}
+                {{ modify_form.name(class="form-control", placeholder='unchanged')}}
+                {% for error in modify_form.name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ modify_form.amount.label }}
+                {{ modify_form.amount(class="form-control", placeholder='unchanged')}}
+                {% for error in modify_form.amount.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+                {% endfor %}
+            </div>
+            <p><input type="submit" class="btn btn-primary bg-dark" value="Submit"></p>
+        </form>
+        </div>
+</div>
+{% else %}
+<div class="container">
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <h3>You have no incomes.</h3>
+        </div>
+
+    </div>
+</div>
+{%endif%}
+{%endblock%}

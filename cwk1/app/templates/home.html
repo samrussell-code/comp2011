@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex-row">
+    <div class="card bg-info text-center">
+    <h1>Budget Tracker</h1>
+    <div class="card">
+        <div class="flex-row"></div>
+        <h2>{{home.description}}</h2>
+        </div>
+    </div>
+    </div>
+    </div>
+
+<div class="container">
+    {% if expenditure_total == 0 and income_total == 0 %}
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            {{ home.null_money }}
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Your expenditure total is: £{{ '%0.2f'|format(expenditure_total|float) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Your income total is: £{{ '%0.2f'|format(income_total|float) }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h3>The difference between your income and your expenditures is: £{{ '%0.2f'|format(exp_inc_dif|float) }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            {% if goal_set %}
+            <div class="card">
+                <div class="card-body">
+                    <h3>Goal: {{ goal_name }}</h3>
+                    <h3>
+                        <span class="badge bg-info"> £{{ '%0.2f'|format(goal_amount|float) }}</span>
+                    </h3>
+                    <div class="body">
+                        {% if goal_progress == 100 %}
+                        <p>You have reached your goal!</p>
+                        {% else %}
+                        <p>You are {{ goal_progress }}% of the way to your goal!</p>
+                        {% endif %}
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: {{ goal_progress }}%" aria-valuenow="{{ goal_progress }}" aria-valuemin="0" aria-valuemax="100">{{ goal_progress }}%</div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card">
+                <div class="card-body">
+                    {{ home.optional_goal }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="card bg-info text-center">
+                <div class="card-body">
+                    <h1>Your Savings Goal</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            {% if goal_set == False %}
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2>You have no goal set. Set one below!</h2>
+                </div>
+            </div>
+            <form action="" method="post" name="goalform">
+                {{ goalform.hidden_tag() }}
+                <label for="{{ goalform.name.id }}" class="form-label"><h3>Goal Name</h3></label>
+                {{ goalform.name(class_='form-control', placeholder='"Super Ambitious Goal!"') }}
+                {% for error in goalform.name.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+                <label for="{{ goalform.amount.id }}" class="form-label"><h3>Savings Goal</h3></label>
+                {{ goalform.amount(class_='form-control', placeholder='"1.50"') }}
+                {% for error in goalform.amount.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+                <p><input type="submit" class="btn btn-secondary" value="Set Goal"></p>
+            </form>
+            {% else %}
+            <h2>{{ name }} <span class="badge bg-info"> £{{'%0.2f'|format(amount|float)}}</span></h2>
+            <form action="" method="post" name="deletegoal">
+                {{ deletegoal.hidden_tag() }}
+                <p><input type="submit" class="btn btn-outline-secondary" value="Delete Goal"></p>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

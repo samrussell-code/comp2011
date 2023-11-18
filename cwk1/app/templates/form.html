@@ -1,0 +1,80 @@
+{% extends "base.html" %}]
+{%block content%}
+
+<div class="flex-row">
+<div class="card bg-info text-center">
+<h1>Record a Transaction</h1>
+<div class="card">
+    <div class="flex-row"></div>
+    <h2>{{form.description}}</h2>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="container">
+        <div class="row justify-content-center">
+        <h3>Transaction Type</h3>
+        </div>
+        </div>
+        <div class="row">
+        <form action="" method="post" name="databaseform">
+            {{databaseform.hidden_tag()}}
+            <fieldset>
+                <legend>Transaction Type</legend>
+                {% for subfield in databaseform.type %}
+                    <div class="row justify-content-center">
+                        <div class="col-10 justify-content-center">
+                            {{ subfield(class_="form-check-input") }}
+                            {{ subfield.label }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </fieldset>
+            {% for error in databaseform.type.errors %}
+            <div class="alert alert-danger" role="alert">
+                [{{error}}]
+            </div>
+            {% endfor %}
+            <div class="container">
+                <div class="row justify-content-center">
+                </div>
+                </div>
+            <label for="{{ databaseform.name.id }}" class="form-label"><h3>Transaction Name</h3></label>
+            {{databaseform.name(class_='form-control', placeholder='"Very expensive donut"')}}
+            {% for error in databaseform.name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+            {% endfor %}
+            <div class="container">
+                <div class="row justify-content-center">
+                </div>
+                </div>
+            <div class="container">
+                <label for="{{ databaseform.amount.id }}" class="form-label"><h3>Transaction Amount</h3></label>
+            {{ databaseform.amount(class_='form-control', placeholder='"1.25"')}}
+            {% for error in databaseform.amount.errors %}
+                <div class="alert alert-danger" role="alert">
+                    [{{error}}]
+                </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col">
+                    <p><input type="submit" class="btn btn-primary btn-block bg-dark" value="Submit"></p>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+{%endblock%}
