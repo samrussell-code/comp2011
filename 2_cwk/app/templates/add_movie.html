@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex-row">
+    <div class="card bg-info text-center">
+    <h1>Add Movie!</h1>
+    <div class="card">
+        <div class="flex-row"></div>
+        <h2>
+            <form action="" method="post" name="add_movie_form">
+                {{ add_movie_form.hidden_tag() }}
+                <label for="{{ add_movie_form.name.id }}" class="form-label"><h3>Movie Name</h3></label>
+                {{ add_movie_form.name(class_='form-control', placeholder='"Drive"') }}
+                {% for error in add_movie_form.name.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+                <p><input type="submit" class="btn btn-secondary" value="Set Goal"></p>
+            </form>
+        </h2>
+        </div>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}
