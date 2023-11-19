@@ -4,20 +4,19 @@
 
 <div class="flex-row">
     <div class="card bg-info text-center">
-    <h1>Movie</h1>
-    <div class="card">
-        <div class="flex-row"></div>
-        <h1>{{ movie_title }}</h1>
+        <h1>Movie</h1>
+        <div class="card">
+            <div class="flex-row"></div>
+            <h1>{{ movie.name }}</h1>
         </div>
-        <h2>{{ release_date }}</h2>
-        <h2>{{ rating }}</h2>
-        <h2>{{ likes }}</h2>
-        <h2>{{ synopsis }}</h2>
-        {% for x in cast %}
-        <h3>{{ x }}</h3>
+        <h2>{{ movie.release_date.strftime("%B %Y") }}</h2>
+        <h2>{{ movie.rating }}</h2>
+        <h2>{{ movie.likes }}</h2>
+        <h2>{{ movie.synopsis }}</h2>
+        {% for cast_member in movie.cast %}
+            <h3>{{ cast_member.name }}</h3>
         {% endfor %}
     </div>
-    </div>
-    </div>
+</div>
 
 {% endblock %}
