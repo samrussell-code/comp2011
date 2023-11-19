@@ -1,13 +1,38 @@
-from flask import render_template, flash
+from flask import render_template, flash, request
 from app import app, models
 from datetime import datetime
-from .forms import AddMovieForm
-import scraper
+from .forms import AddMovieForm, DeleteForm
+import scraper, json
+
+def movies_to_json(movies):
+    return [
+        {
+            'id': movie.movieID,
+            'name': movie.name,
+            'likes': movie.likes,
+            # Add other fields as needed
+        }
+        for movie in movies
+    ]
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    home = {'description': 'Movie review website description'}
-    return render_template('home.html', title='Home', home=home)
+    # Query all movies ordered by likes in descending order
+    movies = models.Movie.query.order_by(models.Movie.likes.desc()).all()
+    movies = movies_to_json(movies)
+    # Pass the movie data to the template
+    load_more_films = DeleteForm()
+    display_count=1
+    if load_more_films.validate_on_submit():
+        display_count+=1
+    return render_template('home.html', title='Home', movies=movies, load_more_films=load_more_films, display_count=display_count*6)
+
+@app.route('/loadmore', methods=['POST'])
+def respond():
+	data = json.loads(request.data)
+	response = data.get('response')
+	# Process the response
+	return json.dumps({'status': 'OK', 'response': response})
 
 @app.route('/add_movie', methods=['GET','POST'])
 def add_movie():

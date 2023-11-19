@@ -6,7 +6,7 @@ $(document).ready(function() {
 
         $.ajax({
             // Specify the endpoint URL the request should be sent to.
-            url: '/respond',
+            url: '/loadmore',
             // The request type.
             type: 'POST',
             // The data, which is now most commonly formatted using JSON because of its
@@ -20,7 +20,8 @@ $(document).ready(function() {
             // a response successfully returned.
             success: function(response){
                 console.log(response);
-                $("p").text("Received: " + response.response);
+
+                $("p").text("Received click on: " + response.response);
             },
             // The function which will be triggered if any error occurs.
             error: function(error){

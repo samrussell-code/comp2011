@@ -6,3 +6,6 @@ from wtforms.validators import DataRequired, NumberRange, Optional
 
 class AddMovieForm(FlaskForm):
     name = TextAreaField('Name', validators=[DataRequired()])
+
+class DeleteForm(FlaskForm):
+    submit = SubmitField('submit')
