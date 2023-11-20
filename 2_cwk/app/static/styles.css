@@ -1,23 +1,64 @@
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
     gap: 20px;
 }
 
 .movie-card {
     background-color: #fff9ff;
     border-radius: 10px;
-    padding: 10px;
+    height: 100px;
+    min-width: 175px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Increased margin at the bottom */
     text-align: center;
+    overflow: hidden; /* Hide overflowing content */
 }
+
+.movie-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.movie-title {
+    font-size: clamp(16px, 4vw, 20px); /* Adjust the font size as needed */
+    line-height: 1; /* Adjust line height for better readability */
+    font: 0.8em "Gill Sans", sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Show up to 2 lines of the title */
+    -webkit-box-orient: vertical;
+    margin-top: 20px;
+    margin-bottom: 2px; /* Add some margin to separate title and likes */
+}
+
+.card-body {
+    display: flex;
+    align-items: center; /* Center the items vertically */
+    justify-content: flex-end; /* Push items to the right */
+    height: 50px; /* Adjust the height as needed */
+}
+
+.like-icon {
+    width: 20px; /* Adjust the width of the like icon as needed */
+    height: 20px; /* Adjust the height of the like icon as needed */
+    margin-left: 5px; /* Adjust the margin to separate the icon from the title */
+}
+
+.likes-count {
+    margin-left: 5px; /* Adjust the margin to separate the number of likes from the icon */
+}
+
+
 
 #loading-container {
     position: fixed;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 50px; /* Adjust the width as needed */
+    width: 20px; /* Adjust the width as needed */
     height: 50px; /* Adjust the height as needed */
     background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
     border-radius: 5px; /* Rounded corners */

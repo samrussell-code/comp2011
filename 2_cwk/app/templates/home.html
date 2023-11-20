@@ -2,6 +2,16 @@
 
 {% block content %}
 <head>
+    <style>
+        .movie-card {
+            max-height: 200px; /* Adjust the maximum height as needed */
+        }
+
+        .movie-card h3 {
+            font-size: 16px; /* Adjust the font size as needed */
+            margin-bottom: 10px; /* Add some bottom margin for spacing */
+        }
+    </style>
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}" ></script>
     <script src="{{ url_for('static', filename='infinite_scroll.js') }}"></script>
 </head>
@@ -10,14 +20,30 @@
         <h1>Movie Review Website</h1>   
         <p id="response"></p>
         <div class="card">
-            <div class="flex-row" id="movie-grid" data-loading-url="{{ url_for('static', filename='loading.gif') }}" data-movies="{{ movies | tojson | safe }}">
-                {% for movie in movies %}
-                    <div class="movie-card">
-                        <!-- Wrap the movie title in an anchor tag -->
-                        <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
-                        <p>Likes: {{ movie.likes }}</p>
-                    </div>
-                {% endfor %}
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="movie-grid" data-loading-url="{{ url_for('static', filename='loading.gif') }}" data-movies="{{ movies | tojson | safe }}">
+                    {% for movie in movies %}
+                        <div class="col">
+                            <div class="movie-grid">
+                                <div class="movie-card">
+                                    <div class="movie-content">
+                                        <div class="movie-title">
+                                            <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- Display the like icon image to the right of the title -->
+                                            <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon">
+                                
+                                            <!-- Display the number of likes -->
+                                            <span class="likes-count">{{ movie.likes }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
             <div id="loading-container"></div>
         </div>

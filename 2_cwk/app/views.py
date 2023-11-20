@@ -4,11 +4,14 @@ from datetime import datetime
 from .forms import AddMovieForm, DeleteForm
 import scraper, json
 
+COLUMN_COUNT = 4
+
+# Inside your Flask routes or utilities
 def movies_to_json(movies):
     return [
         {
             'id': movie.movieID,
-            'name': movie.name,
+            'name': (movie.name[:25] + '...') if len(movie.name) > 25 else movie.name,
             'likes': movie.likes,
             # Add other fields as needed
         }
@@ -18,7 +21,7 @@ def movies_to_json(movies):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Query all movies ordered by likes in descending order
-    movies = models.Movie.query.limit(5).all()
+    movies = models.Movie.query.limit(COLUMN_COUNT).all()
     movies = movies_to_json(movies)
     # Pass the movie data to the template
     return render_template('home.html', title='Home', movies=movies)
@@ -26,7 +29,8 @@ def home():
 @app.route('/movie_card', methods=['GET'])
 def messages():
     page = int(request.args.get('page'))
-    movies = models.Movie.query.offset((page - 1) * 5).limit(5).all()
+    movies = models.Movie.query.offset((page - 1) * COLUMN_COUNT).limit(COLUMN_COUNT).all()
+    movies = movies_to_json(movies)
     return render_template('movie_card.html', movies=movies)
 
 @app.route('/add_movie', methods=['GET','POST'])

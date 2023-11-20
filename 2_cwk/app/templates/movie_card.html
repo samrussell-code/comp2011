@@ -1,6 +1,23 @@
-{% for movie in movies %}
-<div class="movie-card">
-    <h3><a href="{{ url_for('movie', movie_id=movie.movieID) }}">{{ movie.name }}</a></h3>
-    <p>Likes: {{ movie.likes }}</p>
-</div>
-{% endfor %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="movie-grid" data-movies="{{ movies | tojson | safe }}">
+        {% for movie in movies %}
+            <div class="col">
+                <div class="movie-grid">
+                    <div class="movie-card">
+                        <div class="movie-content">
+                            <div class="movie-title">
+                                <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- Display the like icon image to the right of the title -->
+                                <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon">
+                    
+                                <!-- Display the number of likes -->
+                                <span class="likes-count">{{ movie.likes }}</span>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        {% endfor %}
+    </div>
