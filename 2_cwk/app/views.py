@@ -1,4 +1,4 @@
-from flask import render_template, flash, request
+from flask import jsonify, render_template, flash, request
 from app import app, models
 from datetime import datetime
 from .forms import AddMovieForm, DeleteForm
@@ -18,21 +18,16 @@ def movies_to_json(movies):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Query all movies ordered by likes in descending order
-    movies = models.Movie.query.order_by(models.Movie.likes.desc()).all()
+    movies = models.Movie.query.limit(10).all()
     movies = movies_to_json(movies)
     # Pass the movie data to the template
-    load_more_films = DeleteForm()
-    display_count=1
-    if load_more_films.validate_on_submit():
-        display_count+=1
-    return render_template('home.html', title='Home', movies=movies, load_more_films=load_more_films, display_count=display_count*6)
+    return render_template('home.html', title='Home', movies=movies)
 
-@app.route('/loadmore', methods=['POST'])
-def respond():
-	data = json.loads(request.data)
-	response = data.get('response')
-	# Process the response
-	return json.dumps({'status': 'OK', 'response': response})
+@app.route('/movie_card', methods=['GET'])
+def messages():
+    page = int(request.args.get('page'))
+    movies = models.Movie.query.offset((page - 1) * 10).limit(10).all()
+    return render_template('movie_card.html', movies=movies)
 
 @app.route('/add_movie', methods=['GET','POST'])
 def add_movie():

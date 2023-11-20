@@ -3,7 +3,7 @@
 {% block content %}
 <head>
 	<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}" ></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='ajax_js.js') }}" ></script>
+	<script src="{{ url_for('static', filename='infinite_scroll.js') }}"></script>
 </head>
 <div class="flex-row">
     <div class="card bg-info text-center">
@@ -11,15 +11,14 @@
         <p id="response"></p>
         <div class="card">
             <div class="flex-row" id="movie-grid" data-movies="{{ movies | tojson | safe }}">
-                <!-- Render the first 6 movies initially -->
-                {% for i in range(display_count if movies | length >= display_count else movies | length) %}
+                {% for movie in movies %}
                     <div class="movie-card">
-                        <h3>{{ movies[i].name }}</h3>
-                        <p>Likes: {{ movies[i].likes }}</p>
+                        <h3>{{ movie.name }}</h3>
+                        <p>Likes: {{ movie.likes }}</p>
                     </div>
                 {% endfor %}
             </div>
-            <a id="load">Load More</a><br/>
+            <div id="loading-container"></div>
         </div>
     </div>
 </div>
