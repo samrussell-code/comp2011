@@ -1,6 +1,6 @@
 {% for movie in movies %}
 <div class="movie-card">
-    <h3>{{ movie.name }}</h3>
+    <h3><a href="{{ url_for('movie', movie_id=movie.movieID) }}">{{ movie.name }}</a></h3>
     <p>Likes: {{ movie.likes }}</p>
 </div>
 {% endfor %}

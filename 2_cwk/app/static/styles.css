@@ -12,12 +12,20 @@
     text-align: center;
 }
 
-.load-more-btn {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+#loading-container {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+    border-radius: 5px; /* Rounded corners */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading-container img {
+    width: 100%; /* Make the image fill the container */
 }

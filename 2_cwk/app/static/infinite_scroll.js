@@ -1,28 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
     var isLoading = false;
     var page = 2;
+    const movieGrid = document.getElementById('movie-grid');
+    const loadingContainer = document.getElementById('loading-container');
+    const loadingUrl = movieGrid.getAttribute('data-loading-url');
+
+    function showLoading() {
+        loadingContainer.style.display = 'flex';
+    }
+
+    function hideLoading() {
+        loadingContainer.style.display = 'none';
+    }
 
     function fetchMessages() {
         isLoading = true;
-        var loadingContainer = document.getElementById('loading-container');
-        if (loadingContainer) {
-            loadingContainer.innerHTML = '<img src="{{ url_for("static", filename="loading.gif") }}" alt="Loading...">';
-            console.log('Fetching page ' + page);
-            fetch('/movie_card?page=' + page)
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(html) {
-                    var messageContainer = document.getElementById('movie-grid');
-                    messageContainer.insertAdjacentHTML('beforeend', html);
-                    isLoading = false;
-                    page += 1;
-                    console.log('Fetched page ' + (page - 1));
-                });
-        } else {
-            console.error('Loading container not found');
-        }
+        showLoading();
+        console.log('Fetching page ' + page);
+        fetch('/movie_card?page=' + page)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(html) {
+                var messageContainer = document.getElementById('movie-grid');
+                messageContainer.insertAdjacentHTML('beforeend', html); // Use 'beforeend' here
+                isLoading = false;
+                page += 1;
+                hideLoading();
+                console.log('Fetched page ' + (page - 1));
+            });
     }
+    
 
     window.addEventListener('scroll', function() {
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
@@ -31,5 +39,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    fetchMessages();
+    fetchMessages(); // Initial load
 });

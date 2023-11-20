@@ -18,7 +18,7 @@ def movies_to_json(movies):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Query all movies ordered by likes in descending order
-    movies = models.Movie.query.limit(10).all()
+    movies = models.Movie.query.limit(5).all()
     movies = movies_to_json(movies)
     # Pass the movie data to the template
     return render_template('home.html', title='Home', movies=movies)
@@ -26,7 +26,7 @@ def home():
 @app.route('/movie_card', methods=['GET'])
 def messages():
     page = int(request.args.get('page'))
-    movies = models.Movie.query.offset((page - 1) * 10).limit(10).all()
+    movies = models.Movie.query.offset((page - 1) * 5).limit(5).all()
     return render_template('movie_card.html', movies=movies)
 
 @app.route('/add_movie', methods=['GET','POST'])

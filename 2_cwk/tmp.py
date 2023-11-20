@@ -1,5 +1,6 @@
 # file for compiling more movie lists if i can find them
 # this file ignores 
+import scraper
 movie_titles_a = [
     "The 400 Blows",
     "La haine",
@@ -194,4 +195,6 @@ movie_titles_b = [
     "Fight Club",
     "The Social Network"
 ]
-print(list(set((movie_titles_a+movie_titles_b))))
+movie_list = list(set((movie_titles_a+movie_titles_b)))
+for movie in movie_list:
+    scraper.add_movie(movie)
