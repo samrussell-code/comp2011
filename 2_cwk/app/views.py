@@ -1,7 +1,7 @@
 from flask import jsonify, render_template, flash, request
 from app import app, models
 from datetime import datetime
-from .forms import AddMovieForm, DeleteForm
+from .forms import AddMovieForm, DeleteForm, SearchMovieForm
 import scraper, json
 
 COLUMN_COUNT = 4
@@ -22,9 +22,13 @@ def movies_to_json(movies):
 def home():
     # Query all movies ordered by likes in descending order
     movies = models.Movie.query.limit(COLUMN_COUNT).all()
+    search = SearchMovieForm()
     movies = movies_to_json(movies)
+    search_results=[]
+    if search.validate_on_submit():
+        search_results = models.Movie.query.filter(models.Movie.name.contains(str(search.movie_name.data))).all()
     # Pass the movie data to the template
-    return render_template('home.html', title='Home', movies=movies)
+    return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results)
 
 @app.route('/movie_card', methods=['GET'])
 def messages():
@@ -44,4 +48,8 @@ def add_movie():
 @app.route('/movie/<int:movie_id>', methods=['GET'])
 def movie(movie_id):
     movie = models.Movie.query.get_or_404(movie_id)
-    return render_template('movie.html', name=f'DB {movie.name}', movie=movie)
+    cast_id_list = models.MovieCastMember.query.filter(models.MovieCastMember.movie_id==movie_id).all()
+    cast = []
+    for moviecast_relation in cast_id_list:
+        cast.append(models.CastMember.query.filter(models.CastMember.castMemberID==moviecast_relation.cast_member_id).first())
+    return render_template('movie.html', name=f'DB {movie.name}', movie=movie, cast=cast)
