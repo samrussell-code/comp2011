@@ -195,6 +195,7 @@ movie_titles_b = [
     "Fight Club",
     "The Social Network"
 ]
+
 movie_list = list(set((movie_titles_a+movie_titles_b)))
 for movie in movie_list:
     scraper.add_movie(movie)
