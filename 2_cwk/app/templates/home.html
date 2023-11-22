@@ -13,7 +13,7 @@
                 
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-4">
-                        <label for="{{ search.movie_name.id }}" class="form-label"><h5>Search:</h5></label>
+                        <label for="{{ search.movie_name.id }}" class="form-label h-auto"></label>Search:</label>
                     </div>
                     <div class="col-md-4">
                         {{ search.movie_name(class_='form-control', placeholder='"Titanic"')}}
@@ -24,7 +24,7 @@
                         {% endfor %}
                     </div>
                     <div class="col-md-4">
-                        <p><input type="submit" class="btn btn-secondary" value="Go"></p>
+                        <input type="submit" class="btn btn-secondary h-auto" value="Go">
                     </div>
                 </div>
             </form>
@@ -52,12 +52,12 @@
                                     <div class="movie-title">
                                         <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body-r">
                                         <!-- Display the like icon image to the right of the title -->
                                         <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes"
                                              class="like-icon">
                                         <!-- Display the number of likes -->
-                                        <span class="likes-count">{{ movie.likes }}</span>
+                                        <span class="likes-count">{%if movie.likes %}{{ movie.likes }}{%else%}0{%endif%}</span>
                                     </div>
                                 </div>
                             </div>

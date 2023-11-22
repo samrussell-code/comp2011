@@ -1,26 +1,16 @@
 from flask import jsonify, render_template, flash, request
 from app import app, models
 from datetime import datetime
+from app.mUtils import movies_to_json
 from .forms import AddMovieForm, DeleteForm, SearchMovieForm
-import scraper, json
+import scraper, json, logging
 
 COLUMN_COUNT = 4
-
-# Inside your Flask routes or utilities
-def movies_to_json(movies):
-    return [
-        {
-            'id': movie.movieID,
-            'name': (movie.name[:25] + '...') if len(movie.name) > 25 else movie.name,
-            'likes': movie.likes,
-            # Add other fields as needed
-        }
-        for movie in movies
-    ]
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Query all movies ordered by likes in descending order
+    app.logger.info('index route request')
     movies = models.Movie.query.limit(COLUMN_COUNT).all()
     search = SearchMovieForm()
     movies = movies_to_json(movies)
@@ -30,9 +20,10 @@ def home():
     # Pass the movie data to the template
     return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results)
 
+# route to infscroll home page
 @app.route('/movie_card', methods=['GET'])
 def messages():
-    page = int(request.args.get('page'))
+    page = int(request.args.get('page')) # get the page var from js
     movies = models.Movie.query.offset((page - 1) * COLUMN_COUNT).limit(COLUMN_COUNT).all()
     movies = movies_to_json(movies)
     return render_template('movie_card.html', movies=movies)

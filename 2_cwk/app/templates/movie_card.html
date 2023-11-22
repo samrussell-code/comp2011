@@ -8,12 +8,12 @@
                             <div class="movie-title">
                                 <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body-r">
                                 <!-- Display the like icon image to the right of the title -->
                                 <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon">
                     
                                 <!-- Display the number of likes -->
-                                <span class="likes-count">{{ movie.likes }}</span>
+                                <span class="likes-count">{%if movie.likes %}{{ movie.likes }}{%else%}0{%endif%}</span>
                             </div>
                         </div>
                     </div>                    

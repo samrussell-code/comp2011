@@ -3,24 +3,48 @@
 {% block content %}
 
 <div class="flex-row">
-    <div class="card bg-info text-center">
-        <h1>Movie</h1>
-        <div class="card">
-            <div class="flex-row"></div>
-            <h1>{{ movie.name }}</h1>
+        <div class="movie-card">
+            <div class="movie-content">
+                <div class="movie-title">
+                    <h2>{{ movie.name }}, ({% if movie.release_date %}{{ movie.release_date.strftime("%B %Y") }}{% else %} No release date found...{% endif %})</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-body-l">
+                            <span class="likes-count">{{ movie.rating }} / 10</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body-r">
+                            <!-- Display the like icon image to the right of the title -->
+                            <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes"
+                            class="like-icon">
+                            <!-- Display the number of likes -->
+                            <span class="likes-count">{%if movie.likes %}{{ movie.likes }}{%else%}0{%endif%}</span>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card -->
         </div>
-        {% if movie.release_date %}
-        <h2>{{ movie.release_date.strftime("%B %Y") }}</h2>
-        {% else %}
-        <h2>No release date found...</h2>
-        {% endif %}
-        <h2>{{ movie.rating }}</h2>
-        <h2>{{ movie.likes }}</h2>
-        <h2>{{ movie.synopsis }}</h2>
-        {% for cast_member in cast %}
-            <h3>{{ cast_member.name }}</h3>
-        {% endfor %}
+        <!-- synop card -->
+        <div class="card mt-3">
+            {{ movie.synopsis }}
+        </div>
+        <!-- end synop card -->
+        <!-- cast list -->
+        <div class="card mt-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h3>Cast:</h3></li>
+                {% for cast_member in cast %}
+                <li class="list-group-item">
+                    {{ cast_member.name }}
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+
     </div>
+    <!-- end cast list -->
 </div>
 
 {% endblock %}
