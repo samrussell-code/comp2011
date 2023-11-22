@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 page += 1;
                 hideLoading();
                 console.log('Fetched page ' + (page - 1));
-                if (page%5!=0){ // arbitrary extend the number of columns fetched
+                if (page%6!=0){ // arbitrary extend the number of columns fetched
                     fetchMessages();
                 }
             });

@@ -44,3 +44,12 @@ def movie(movie_id):
     for moviecast_relation in cast_id_list:
         cast.append(models.CastMember.query.filter(models.CastMember.castMemberID==moviecast_relation.cast_member_id).first())
     return render_template('movie.html', name=f'DB {movie.name}', movie=movie, cast=cast)
+
+@app.route('/cast_member/<int:cast_member_id>', methods=['GET'])
+def cast_member(cast_member_id):
+    cast_member = models.CastMember.query.get_or_404(cast_member_id)
+    movie_id_list = models.MovieCastMember.query.filter(models.MovieCastMember.cast_member_id==cast_member_id).all()
+    movies = []
+    for moviecast_relation in movie_id_list:
+        movies.append(models.Movie.query.filter(models.Movie.movieID==moviecast_relation.movie_id).first())
+    return render_template('cast_member.html', name=f'DB {cast_member.name}', cast_member=cast_member, movies=movies)

@@ -10,10 +10,9 @@
         <div class="card bg-light p-3 border-dark">
             <form action="" method="post" name="search">
                 {{ search.hidden_tag() }}
-                
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-4">
-                        <label for="{{ search.movie_name.id }}" class="form-label h-auto"></label>Search:</label>
+                        <label for="{{ search.movie_name.id }}" class="form-label"></label>Search:</label>
                     </div>
                     <div class="col-md-4">
                         {{ search.movie_name(class_='form-control', placeholder='"Titanic"')}}

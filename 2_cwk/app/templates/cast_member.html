@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex-row">
+        <div class="movie-card text-center mt-3">
+            <div class="movie-content">
+                <div class="movie-title">
+                    <h2>{{ cast_member.name }}</h2>
+                </div>
+            </div> <!-- end card -->
+        </div>
+        <!-- synop card -->
+        <!-- end synop card -->
+        <!-- cast list -->
+        <div class="card mt-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h3>Filmography:</h3></li>
+                {% for movie in movies %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('movie', movie_id=movie.movieID) }}">{{ movie.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+    <!-- end cast list -->
+</div>
+
+{% endblock %}
