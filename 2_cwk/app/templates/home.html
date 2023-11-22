@@ -33,7 +33,15 @@
         <ul class="list-group list-group-flush">
             {% for result in search_results[:10] %}
                 <li class="list-group-item">
-                    <a href="{{ url_for('movie', movie_id=result.movieID) }}">{{ result.name }}</a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        {% if result.__class__.__name__ == 'Movie' %}
+                            <a href="{{ url_for('movie', movie_id=result.movieID) }}">{{ result.name }}</a>
+                            <img src="{{ url_for('static', filename='clipboard_blue.png') }}" alt="Movie" class="like-icon">
+                        {% elif result.__class__.__name__ == 'CastMember' %}
+                            <a href="{{ url_for('cast_member', cast_member_id=result.castMemberID) }}">{{ result.name }}</a>
+                            <img src="{{ url_for('static', filename='star_red.png') }}" alt="Cast Member" class="like-icon">
+                        {% endif %}
+                    </div>
                 </li>
             {% endfor %}
         </ul>

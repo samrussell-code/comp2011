@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, NumberRange, Optional
 # form for adding an income or expenditure entry
 
 class AddMovieForm(FlaskForm):
-    name = TextAreaField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
 
 class SearchMovieForm(FlaskForm):
     movie_name = StringField('search', validators=[DataRequired()])

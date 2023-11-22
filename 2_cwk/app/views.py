@@ -1,7 +1,7 @@
 from flask import jsonify, render_template, flash, request
 from app import app, models
 from datetime import datetime
-from app.mUtils import movies_to_json
+from app.mUtils import movies_to_json, search_query
 from .forms import AddMovieForm, DeleteForm, SearchMovieForm
 import scraper, json, logging
 
@@ -16,8 +16,7 @@ def home():
     movies = movies_to_json(movies)
     search_results=[]
     if search.validate_on_submit():
-        search_results = models.Movie.query.filter(models.Movie.name.contains(str(search.movie_name.data))).all()
-    # Pass the movie data to the template
+        search_results=search_query(search)
     return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results)
 
 # route to infscroll home page
