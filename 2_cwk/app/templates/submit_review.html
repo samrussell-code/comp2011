@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex-row">
+    <div class="submit-review-card text-center mt-3">
+        <div class="card bg-light p-3">
+            <h2>Review for '{{ movie.name }}'</h2>
+            <form action="{{ url_for('submit_review', movie_id=movie_id) }}" method="post">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    <label for="{{ form.rating.id }}" class="form-label">Rating:</label>
+                    {{ form.rating(class_='form-control', placeholder='Enter your rating') }}
+                    {% for error in form.rating.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.title.id }}" class="form-label">Title (optional):</label>
+                    {{ form.title(class_='form-control', placeholder='Enter a title for your review') }}
+                    {% for error in form.title.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.body.id }}" class="form-label">Review Body:</label>
+                    {{ form.body(class_='form-control', placeholder='Enter your review') }}
+                    {% for error in form.body.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

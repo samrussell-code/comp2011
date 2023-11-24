@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex-row">
+    <div class="user-profile text-center mt-3">
+        <div class="profile-content">
+            <div class="profile-username">
+                <h2>{{ user.username }}</h2>
+            </div>
+        </div> <!-- end profile-content -->
+    </div>
+</div>
+
+<!-- User Reviews -->
+<div class="card mt-3">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h3>User Reviews:</h3></li>
+        {% for review in user_reviews %}
+            <li class="list-group-item">
+                <p><a href="{{ url_for('movie', movie_id=review.movie.movieID) }}">{{ review.movie.name }}</a>: <strong>{{ review.title }}</strong></p>
+                <p>Rating: {{ review.rating }}</p>
+                <p>{{ review.body }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<!-- End User Reviews -->
+
+{% endblock %}

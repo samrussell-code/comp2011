@@ -3,69 +3,61 @@
 {% block content %}
 
 <div class="flex-row">
-        <div class="movie-card text-center mt-3">
-            <div class="movie-content">
-                <div class="movie-title">
-                    <h2>{{ movie.name }} ({% if movie.release_date %}{{ movie.release_date.strftime("%B %Y") }}{% else %} No release date found...{% endif %})</h2>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card-body-l">
-                            <span class="likes-count">{{ movie.rating }} / 10</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card-body-r">
-                            <!-- Display the like icon image to the right of the title -->
-                            <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes"
-                            class="like-icon">
-                            <!-- Display the number of likes -->
-                            <span class="likes-count">{%if movie.likes %}{{ movie.likes }}{%else%}0{%endif%}</span>
-                        </div>
+    <div class="movie-card text-center mt-3">
+        <div class="movie-content">
+            <div class="movie-title">
+                <h2>{{ movie.name }} ({% if movie.release_date %}{{ movie.release_date.strftime("%B %Y") }}{% else %} No release date found...{% endif %})</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card-body-l">
+                        <span class="likes-count">{{ movie.rating }} / 10</span>
                     </div>
                 </div>
-            </div> <!-- end card -->
-        </div>
-        <!-- synop card -->
-        <div class="card mt-3">
-            {{ movie.synopsis }}
-        </div>
-        <!-- end synop card -->
-        <!-- cast list -->
-        <div class="card mt-3">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h3>Cast:</h3></li>
-                {% for cast_member in cast %}
+                <div class="col-md-6">
+                    <div class="card-body-r">
+                        <!-- Display the like icon image to the right of the title -->
+                        <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes"
+                             class="like-icon">
+                        <!-- Display the number of likes -->
+                        <span class="likes-count">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div>
+    <!-- synop card -->
+    <div class="card mt-3">
+        {{ movie.synopsis }}
+    </div>
+    <!-- end synop card -->
+    <!-- cast list -->
+    <div class="card mt-3">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h3>Cast:</h3></li>
+            {% for cast_member in cast %}
                 <li class="list-group-item">
                     <a href="{{ url_for('cast_member', cast_member_id=cast_member.castMemberID) }}">{{ cast_member.name }}</a>
                 </li>
-                {% endfor %}
-            </ul>
-        </div>
-
+            {% endfor %}
+        </ul>
     </div>
     <!-- end cast list -->
-    {% if current_user.is_authenticated %}
-        <button class="btn btn-warning" data-toggle="modal" data-target="#reviewModal">Leave a Review</button>
-    {% endif %}
 
-        <!-- Review Modal -->
-    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reviewModalLabel">Leave a Review for {{ movie.name }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Include the review form here -->
-                    {% include 'review_form.html' %}
-                </div>
-            </div>
-        </div>
+    <!-- reviews -->
+    <div class="card mt-3">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h3>User Reviews:</h3></li>
+            {% for review in reviews %}
+                <li class="list-group-item">
+                    <p><a href="{{ url_for('user_profile', user_id=review.user.userID) }}">{{ review.user.username }}</a>: <strong>{{ review.title }}</strong></p>
+                    <p>Rating: {{ review.rating }}</p>
+                    <p>{{ review.body }}</p>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
+    <!-- end reviews -->
 
 </div>
 

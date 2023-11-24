@@ -4,6 +4,7 @@ from app import app, models, db
 from datetime import datetime
 from app.mUtils import movies_to_json, search_query
 from .forms import AddMovieForm, DeleteForm, ReviewForm, SearchMovieForm, LoginForm, RegisterForm
+from sqlalchemy.orm import joinedload
 import scraper, json, logging
 
 COLUMN_COUNT = 4
@@ -38,33 +39,42 @@ def add_movie():
 
 @app.route('/movie/<int:movie_id>', methods=['GET'])
 def movie(movie_id):
-    form = ReviewForm(request.form)
     movie = models.Movie.query.get_or_404(movie_id)
     cast_id_list = models.MovieCastMember.query.filter(models.MovieCastMember.movie_id==movie_id).all()
     cast = []
     for moviecast_relation in cast_id_list:
         cast.append(models.CastMember.query.filter(models.CastMember.castMemberID==moviecast_relation.cast_member_id).first())
-    return render_template('movie.html', name=f'DB {movie.name}', movie=movie, cast=cast,form=form)
+    # reviews = models.Review.query.filter(models.Review.movie_id==movie_id).all()
+    reviews = (
+    models.Review.query
+    .join(models.User)
+    .filter(models.Review.movie_id == movie_id)
+    .options(joinedload(models.Review.user))
+    .all()
+)
+    return render_template('movie.html', name=f'DB {movie.name}', movie=movie, cast=cast, reviews=reviews)
 
-@app.route('/submit_review/<int:movie_id>', methods=['POST'])
+@app.route('/submit_review/<int:movie_id>', methods=['GET', 'POST'])
 @login_required
 def submit_review(movie_id):
     form = ReviewForm(request.form)
+    movie = models.Movie.query.filter(models.Movie.movieID==movie_id).first()
     if form.validate_on_submit():
-        # Save the review to the database
-        review = models.Review(
-            user_id=current_user.id,
-            movie_id=movie_id,
-            rating=form.rating.data,
-            title=form.title.data,
-            body=form.body.data
-        )
-        db.session.add(review)
-        db.session.commit()
+        new_review = models.Review(user_id=current_user.get_id(),movie_id=movie_id,title=form.title.data,rating=form.rating.data,body=form.body.data)
+        with app.app_context():
+            db.session.add(new_review)
+            db.session.commit()
+            flash('Review submitted successfully!', 'success')
+        return redirect(url_for('movie', movie_id=movie_id))
 
-        flash('Review submitted successfully!', 'success')
+    return render_template('submit_review.html', form=form, movie_id=movie_id,  movie=movie)
 
-    return redirect(url_for('movie', movie_id=movie_id,form=form))
+@app.route('/user/<int:user_id>', methods=['GET'])
+def user_profile(user_id):
+    user = models.User.query.get_or_404(user_id)
+    user_reviews = models.Review.query.filter(models.Review.user_id == user_id).all()
+
+    return render_template('user.html', user=user, user_reviews=user_reviews)
 
 @app.route('/cast_member/<int:cast_member_id>', methods=['GET'])
 def cast_member(cast_member_id):
