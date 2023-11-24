@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex-row">
+    <div class="register-card text-center mt-3">
+        <div class="card bg-light p-3">
+            <h2>Register</h2>
+            <form action="{{ url_for('register') }}" method="post">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    <label for="{{ form.username.id }}" class="form-label">Username:</label>
+                    {{ form.username(class_='form-control', placeholder='Choose a username') }}
+                    {% for error in form.username.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.password.id }}" class="form-label">Password:</label>
+                    {{ form.password(class_='form-control', placeholder='Choose a password') }}
+                    {% for error in form.password.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.confirm_password.id }}" class="form-label">Confirm Password:</label>
+                    {{ form.confirm_password(class_='form-control', placeholder='Confirm your password') }}
+                    {% for error in form.confirm_password.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,6 +1,8 @@
 from app import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     #COLUMNS
     userID = db.Column(db.Integer, index=True, primary_key=True)
     username = db.Column(db.String(500), unique=True, nullable=False)
@@ -9,6 +11,16 @@ class User(db.Model):
     #RELATIONSHIPS
     user_likes_relation = db.relationship('UserLike', backref='user', lazy=True)
     reviews_relation = db.relationship('Review', backref='user', lazy=True)
+    #MIXIN FUNCTIONS
+    def get_id(self):
+        return str(self.userID)
+    def set_password(self, password):
+        # Hash and set the password
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        # Check if the provided password matches the stored hash
+        return check_password_hash(self.password, password)
 
 class Movie(db.Model):
     movieID = db.Column(db.Integer, index=True, primary_key=True)
@@ -50,6 +62,7 @@ class Review(db.Model):
     reviewID = db.Column(db.Integer, index=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.userID'))#fk1
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.movieID'))#fk2
+    title = db.Column(db.String(125))
     rating = db.Column(db.Integer) # this will be int range 0-100 (representing 0.0-10.0 to 1dp)
     body = db.Column(db.String(5000))
 

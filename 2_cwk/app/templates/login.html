@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex-row">
+    <div class="login-card text-center mt-3">
+        <div class="card bg-light p-3">
+            <h2>Login</h2>
+            <form action="{{ url_for('login') }}" method="post">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    <label for="{{ form.username.id }}" class="form-label">Username:</label>
+                    {{ form.username(class_='form-control', placeholder='Enter your username') }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.password.id }}" class="form-label">Password:</label>
+                    {{ form.password(class_='form-control', placeholder='Enter your password') }}
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
