@@ -32,6 +32,7 @@
           {% if current_user.is_authenticated %}
             <!-- If the user is authenticated, show the Logout link -->
             <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('user', user_id=current_user.userID) }}">Profile<img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon"></a></li>
           {% else %}
             <!-- If the user is not authenticated, show the Login link -->
             <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>

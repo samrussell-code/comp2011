@@ -19,7 +19,7 @@
         {% for review in user_reviews %}
             <li class="list-group-item">
                 <p><a href="{{ url_for('movie', movie_id=review.movie.movieID) }}">{{ review.movie.name }}</a>: <strong>{{ review.title }}</strong></p>
-                <p>Rating: {{ review.rating }}</p>
+                <p>Rating: {{ review.rating/10 }}/10</p>
                 <p>{{ review.body }}</p>
             </li>
         {% endfor %}
