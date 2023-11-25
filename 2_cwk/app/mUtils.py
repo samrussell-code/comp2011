@@ -1,4 +1,4 @@
-from app import models
+from app import models, app, db
 def movies_to_json(movies):
     return [
         {
@@ -9,6 +9,18 @@ def movies_to_json(movies):
         }
         for movie in movies
     ]
+
+def update_likes(movie_id):
+    '''Since movies store the like counter in their table we need to update this occasionally to match the new user like count'''
+    movie = models.Movie.query.filter(models.Movie.movieID == movie_id).first()
+    old_likes = movie.likes
+    new_likes = models.UserLike.query.filter(models.UserLike.movie_id == movie_id).all()
+    if len(new_likes) == old_likes:
+        return
+    with app.app_context():
+        movie.likes = len(new_likes)
+        db.session.commit()
+
 
 def search_constraint(array_2d, max_size):
     '''turns an array of lists into an evenly spaced single list of max size
@@ -38,9 +50,6 @@ def search_constraint(array_2d, max_size):
             output_list.extend(sublist)
     
     return output_list
-
-    
-
 
 def search_query(query):
     movie_results = models.Movie.query.filter(models.Movie.name.contains(str(query.movie_name.data))).all()

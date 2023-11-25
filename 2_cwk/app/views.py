@@ -2,7 +2,7 @@ from flask import jsonify, redirect, render_template, flash, request, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, models, db
 from datetime import datetime
-from app.mUtils import movies_to_json, search_query
+from app.mUtils import movies_to_json, search_query, update_likes
 from .forms import AddMovieForm, DeleteForm, ReviewForm, SearchMovieForm, LoginForm, RegisterForm
 from sqlalchemy.orm import joinedload
 import scraper, json, logging
@@ -21,12 +21,17 @@ def home():
         search_results=search_query(search)
     return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results)
 
+@login_required
 @app.route('/like_movie/<int:movie_id>', methods=['POST'])
 def like_movie(movie_id):
     # Logic to handle liking the movie (you need to implement this)
     # Update the likes count in your database or wherever you store it
-
     # Return the updated likes count
+    with app.app_context():
+        new_like = models.UserLike(movie_id=movie_id,user_id=current_user.id)
+        db.session.add(new_like)
+        db.session.commit()
+    update_likes(movie_id)
     return jsonify({'likes': 1})
 
 # route to infscroll home page
