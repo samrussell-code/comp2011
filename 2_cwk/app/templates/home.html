@@ -31,7 +31,7 @@
     </div>
     <div class="card mt-3">
         <ul class="list-group list-group-flush">
-            {% for result in search_results[:10] %}
+            {% for result in search_results %}
                 <li class="list-group-item">
                     <div class="d-flex justify-content-between align-items-center">
                         {% if result.__class__.__name__ == 'Movie' %}
@@ -40,6 +40,9 @@
                         {% elif result.__class__.__name__ == 'CastMember' %}
                             <a href="{{ url_for('cast_member', cast_member_id=result.castMemberID) }}">{{ result.name }}</a>
                             <img src="{{ url_for('static', filename='star_red.png') }}" alt="Cast Member" class="like-icon">
+                        {% elif result.__class__.__name__ == 'User' %}
+                        <a href="{{ url_for('user', user_id=result.userID) }}">{{ result.username }}</a>
+                        <img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon">
                         {% endif %}
                     </div>
                 </li>

@@ -70,7 +70,7 @@ def submit_review(movie_id):
     return render_template('submit_review.html', form=form, movie_id=movie_id,  movie=movie)
 
 @app.route('/user/<int:user_id>', methods=['GET'])
-def user_profile(user_id):
+def user(user_id):
     user = models.User.query.get_or_404(user_id)
     user_reviews = models.Review.query.filter(models.Review.user_id == user_id).all()
 
