@@ -3,6 +3,7 @@
 {% block content %}
 <head>
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='ajax_likes.js') }}"></script>
     <script src="{{ url_for('static', filename='infinite_scroll.js') }}"></script>
 </head>
 <div class="flex-row">
@@ -12,7 +13,7 @@
                 {{ search.hidden_tag() }}
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-4">
-                        <label for="{{ search.movie_name.id }}" class="form-label"></label>Search:</label>
+                        <label for="{{ search.movie_name.id }}" class="form-label">Search:</label>
                     </div>
                     <div class="col-md-4">
                         {{ search.movie_name(class_='form-control', placeholder='"Titanic"')}}
@@ -36,13 +37,13 @@
                     <div class="d-flex justify-content-between align-items-center">
                         {% if result.__class__.__name__ == 'Movie' %}
                             <a href="{{ url_for('movie', movie_id=result.movieID) }}">{{ result.name }}</a>
-                            <img src="{{ url_for('static', filename='clipboard_blue.png') }}" alt="Movie" class="like-icon">
+                            <img src="{{ url_for('static', filename='clipboard_blue.png') }}" alt="Movie" class="like-icon" data-movie-id="{{ result.movieID }}">
                         {% elif result.__class__.__name__ == 'CastMember' %}
                             <a href="{{ url_for('cast_member', cast_member_id=result.castMemberID) }}">{{ result.name }}</a>
-                            <img src="{{ url_for('static', filename='star_red.png') }}" alt="Cast Member" class="like-icon">
+                            <img src="{{ url_for('static', filename='star_red.png') }}" alt="Cast Member" class="like-icon" data-movie-id="{{ result.movieID }}">
                         {% elif result.__class__.__name__ == 'User' %}
-                        <a href="{{ url_for('user', user_id=result.userID) }}">{{ result.username }}</a>
-                        <img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon">
+                            <a href="{{ url_for('user', user_id=result.userID) }}">{{ result.username }}</a>
+                            <img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon" data-movie-id="{{ result.movieID }}">
                         {% endif %}
                     </div>
                 </li>
@@ -64,10 +65,9 @@
                                     </div>
                                     <div class="card-body-r">
                                         <!-- Display the like icon image to the right of the title -->
-                                        <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes"
-                                             class="like-icon">
+                                        <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon" data-movie-id="{{ movie.id }}">
                                         <!-- Display the number of likes -->
-                                        <span class="likes-count">{%if movie.likes %}{{ movie.likes }}{%else%}0{%endif%}</span>
+                                        <span class="likes-count">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
                                     </div>
                                 </div>
                             </div>

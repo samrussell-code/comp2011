@@ -21,6 +21,14 @@ def home():
         search_results=search_query(search)
     return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results)
 
+@app.route('/like_movie/<int:movie_id>', methods=['POST'])
+def like_movie(movie_id):
+    # Logic to handle liking the movie (you need to implement this)
+    # Update the likes count in your database or wherever you store it
+
+    # Return the updated likes count
+    return jsonify({'likes': 1})
+
 # route to infscroll home page
 @app.route('/movie_card', methods=['GET'])
 def messages():

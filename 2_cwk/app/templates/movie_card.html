@@ -1,23 +1,31 @@
+<head>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='ajax_likes.js') }}"></script>
+</head>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="movie-grid" data-movies="{{ movies | tojson | safe }}">
         {% for movie in movies %}
-            <div class="col">
-                <div class="movie-grid">
-                    <div class="movie-card">
-                        <div class="movie-content">
-                            <div class="movie-title">
-                                <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
-                            </div>
-                            <div class="card-body-r">
-                                <!-- Display the like icon image to the right of the title -->
-                                <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon">
-                    
-                                <!-- Display the number of likes -->
-                                <span class="likes-count">{%if movie.likes %}{{ movie.likes }}{%else%}0{%endif%}</span>
-                            </div>
+        <div class="col">
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <div class="movie-content">
+                        <div class="movie-title">
+                            <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
                         </div>
-                    </div>                    
+                        <div class="card-body-r">
+                            <!-- Display the like icon image to the right of the title -->
+                            <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon" data-movie-id="{{ movie.id }}">
+        
+                            <!-- Display the number of likes -->
+                            <span class="likes-count" id="likes-count-{{ movie.id }}">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
+        
+                            <!-- Response location for the like button click -->
+                            <p id="response-{{ movie.id }}"></p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        
         {% endfor %}
     </div>
