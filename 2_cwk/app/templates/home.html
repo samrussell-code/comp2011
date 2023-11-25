@@ -50,7 +50,6 @@
             {% endfor %}
         </ul>
     </div>
-    <p id="response"></p>
     <div class="card mt-3">
         <div class="container">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="movie-grid"
@@ -64,8 +63,12 @@
                                         <h3><a href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
                                     </div>
                                     <div class="card-body-r">
-                                        <!-- Display the like icon image to the right of the title -->
+                                        <!-- Display the like icon image to the right of the title {% if movie.id in liked_movie_ids %}_liked{% endif %}-->
+                                        {% if movie.id in liked_movie_ids %}
+                                        <img src="{{ url_for('static', filename='likes_ico_liked.png') }}" alt="Likes" class="like-icon liked" data-movie-id="{{ movie.id }}">
+                                        {% else %}
                                         <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon" data-movie-id="{{ movie.id }}">
+                                        {% endif %}
                                         <!-- Display the number of likes -->
                                         <span class="likes-count">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
                                     </div>

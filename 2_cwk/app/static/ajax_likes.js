@@ -1,31 +1,37 @@
 $(document).ready(function () {
     // Function to handle like button click
     function handleLikeButtonClick() {
-        var movieId = $(this).data('movie-id');
-        var likesCountSpan = $(this).siblings('.likes-count');
+        // Store a reference to the clicked element
+        var $likeIcon = $(this);
+        var movieId = $likeIcon.data('movie-id');
+        var likesCountSpan = $likeIcon.siblings('.likes-count');
         var responseLocation = $('#response-' + movieId);
 
         // Check if the like button is already toggled as liked
-        var isLiked = $(this).hasClass('liked');
+        var isLiked = $likeIcon.hasClass('liked');
 
-        // Simulate an AJAX request (replace this with your actual AJAX request)
-        // For this example, we're updating the likes count and response location immediately
-        var currentLikes = parseInt(likesCountSpan.text());
+        // Determine the endpoint based on whether it's liked or unliked
+        var endpoint = isLiked ? '/unlike_movie/' : '/like_movie/';
 
-        if (isLiked) {
-            // If already liked, decrement the counter and update the response
-            likesCountSpan.text(currentLikes - 1);
-            // responseLocation.text("Unliked!");
-        } else {
-            // If not liked, increment the counter and update the response
-            likesCountSpan.text(currentLikes + 1);
-            // responseLocation.text("Liked!");
-        }
+        // Make an AJAX request to the determined endpoint
+        $.ajax({
+            type: 'POST',
+            url: endpoint + movieId,
+            data: { isLiked: isLiked },
+            success: function (data) {
+                // Update the likes count on success
+                likesCountSpan.text(data.likes);
+                responseLocation.text(data.message);
 
-        // Toggle the like button icon and update the image source
-        $(this).toggleClass('liked');
-        var newImageSrc = isLiked ? 'likes_ico.png' : 'likes_ico_liked.png';
-        $(this).attr('src', 'static/' + newImageSrc);
+                // Toggle the like button icon and update the image source
+                $likeIcon.toggleClass('liked');
+                var newImageSrc = isLiked ? 'likes_ico.png' : 'likes_ico_liked.png';
+                $likeIcon.attr('src', 'static/' + newImageSrc);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
 
     // Initial setup for like button click event on existing movie cards

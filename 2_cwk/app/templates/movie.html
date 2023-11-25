@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<head>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='ajax_likes.js') }}"></script>
+</head>
+
 
 <div class="flex-row">
     <div class="movie-card text-center mt-3">
@@ -17,10 +22,14 @@
                 <div class="col-md-6">
                     <div class="card-body-r">
                         <!-- Display the like icon image to the right of the title -->
-                        <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes"
-                             class="like-icon">
+                        {% if current_user_like_exist %}
+                        <img src="{{ url_for('static', filename='likes_ico_liked.png') }}" alt="Likes" class="like-icon {% if current_user_like_exist %}liked{% endif %}" data-movie-id="{{ movie.movieID }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon {% if current_user_like_exist %}liked{% endif %}" data-movie-id="{{ movie.movieID }}">
+                        {% endif %}
+                    
                         <!-- Display the number of likes -->
-                        <span class="likes-count">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
+                        <span class="likes-count" id="likes-count-{{ movie.movieID }}">{{ movie.likes }}</span>
                     </div>
                 </div>
             </div>
@@ -59,19 +68,18 @@
             </ul>
         </div>
     {% else %}
-    <div class="card mt-3 border-0">
+        <div class="card mt-3 border-0">
             <li class="list-group-item">
                 <p>No reviews yet...</p>
             </li>
-
-    </div>
+        </div>
     {% endif %}
     <!-- end reviews -->
 
     <!-- link to review form -->
     {% if current_user.is_authenticated %}
         <div class="card mt-3 border-0">
-                    <a href="{{ url_for('submit_review', movie_id=movie.movieID) }}" class="btn btn-primary mt-3">Leave a Review</a>
+            <a href="{{ url_for('submit_review', movie_id=movie.movieID) }}" class="btn btn-primary mt-3">Leave a Review</a>
         </div>
     {% endif %}
 

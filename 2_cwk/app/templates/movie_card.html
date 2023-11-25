@@ -14,13 +14,16 @@
                         </div>
                         <div class="card-body-r">
                             <!-- Display the like icon image to the right of the title -->
-                            <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon" data-movie-id="{{ movie.id }}">
+                            {% if movie.id in liked_movie_ids %}
+                            <img src="{{ url_for('static', filename='likes_ico_liked.png') }}" alt="Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
+                            {% endif %}
         
                             <!-- Display the number of likes -->
                             <span class="likes-count" id="likes-count-{{ movie.id }}">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
         
                             <!-- Response location for the like button click -->
-                            <p id="response-{{ movie.id }}"></p>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 from flask import jsonify, redirect, render_template, flash, request, url_for
 from flask_login import login_user, logout_user, current_user, login_required
+from sqlalchemy import update
 from app import app, models, db
 from datetime import datetime
 from app.mUtils import movies_to_json, search_query, update_likes
@@ -17,22 +18,40 @@ def home():
     search = SearchMovieForm()
     movies = movies_to_json(movies)
     search_results=[]
+    liked_movie_ids = []
+    if current_user.is_authenticated:
+        liked_movies = models.UserLike.query.filter(models.UserLike.user_id == current_user.userID).all()
+        for movie in liked_movies:
+            liked_movie_ids.append(movie.movie_id)
     if search.validate_on_submit():
         search_results=search_query(search)
-    return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results)
+    return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results, liked_movie_ids=liked_movie_ids)
 
-@login_required
 @app.route('/like_movie/<int:movie_id>', methods=['POST'])
+@login_required
 def like_movie(movie_id):
-    # Logic to handle liking the movie (you need to implement this)
     # Update the likes count in your database or wherever you store it
     # Return the updated likes count
+    is_liked = request.form.get('isLiked') == 'true'
     with app.app_context():
-        new_like = models.UserLike(movie_id=movie_id,user_id=current_user.id)
+        new_like = models.UserLike(movie_id=movie_id, user_id=current_user.userID)
         db.session.add(new_like)
         db.session.commit()
-    update_likes(movie_id)
-    return jsonify({'likes': 1})
+    likes_count = update_likes(movie_id)
+    # Return JSON response with updated likes count and a message
+    return jsonify({'likes': likes_count})
+
+@app.route('/unlike_movie/<int:movie_id>', methods=['POST'])
+@login_required
+def unlike_movie(movie_id):
+    is_liked = request.form.get('isLiked') == 'false'
+    with app.app_context():
+        like_to_delete = db.session.query(models.UserLike).filter(models.UserLike.user_id==current_user.userID,models.UserLike.movie_id==movie_id).first()
+        db.session.delete(like_to_delete)
+        db.session.commit()
+    likes_count = update_likes(movie_id)
+    # Return JSON response with updated likes count and a message
+    return jsonify({'likes': likes_count})
 
 # route to infscroll home page
 @app.route('/movie_card', methods=['GET'])
@@ -40,7 +59,12 @@ def messages():
     page = int(request.args.get('page')) # get the page var from js
     movies = models.Movie.query.offset((page - 1) * COLUMN_COUNT).limit(COLUMN_COUNT).all()
     movies = movies_to_json(movies)
-    return render_template('movie_card.html', movies=movies)
+    liked_movie_ids = []
+    if current_user.is_authenticated:
+        liked_movies = models.UserLike.query.filter(models.UserLike.user_id == current_user.userID).all()
+        for movie in liked_movies:
+            liked_movie_ids.append(movie.movie_id)
+    return render_template('movie_card.html', movies=movies, liked_movie_ids=liked_movie_ids)
 
 @app.route('/add_movie', methods=['GET','POST'])
 def add_movie():
@@ -53,6 +77,7 @@ def add_movie():
 @app.route('/movie/<int:movie_id>', methods=['GET'])
 def movie(movie_id):
     movie = models.Movie.query.get_or_404(movie_id)
+    current_user_like_exist = models.UserLike.query.filter(models.UserLike.user_id==current_user.userID, models.UserLike.movie_id==movie_id).first()
     cast_id_list = models.MovieCastMember.query.filter(models.MovieCastMember.movie_id==movie_id).all()
     cast = []
     for moviecast_relation in cast_id_list:
@@ -65,7 +90,7 @@ def movie(movie_id):
     .options(joinedload(models.Review.user))
     .all()
 )
-    return render_template('movie.html', name=f'DB {movie.name}', movie=movie, cast=cast, reviews=reviews)
+    return render_template('movie.html', name=f'DB {movie.name}', movie=movie, cast=cast, reviews=reviews, current_user_like_exist=current_user_like_exist)
 
 @app.route('/submit_review/<int:movie_id>', methods=['GET', 'POST'])
 @login_required

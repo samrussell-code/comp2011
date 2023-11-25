@@ -11,15 +11,17 @@ def movies_to_json(movies):
     ]
 
 def update_likes(movie_id):
-    '''Since movies store the like counter in their table we need to update this occasionally to match the new user like count'''
+    '''Since movies store the like counter in their table we need to update this occasionally to match the new user like count
+    returns the new like count'''
     movie = models.Movie.query.filter(models.Movie.movieID == movie_id).first()
     old_likes = movie.likes
-    new_likes = models.UserLike.query.filter(models.UserLike.movie_id == movie_id).all()
-    if len(new_likes) == old_likes:
-        return
-    with app.app_context():
-        movie.likes = len(new_likes)
-        db.session.commit()
+    new_likes = len(models.UserLike.query.filter(models.UserLike.movie_id == movie_id).all())
+    if new_likes != old_likes:
+        with app.app_context():
+            movie = db.session.query(models.Movie).filter(models.Movie.movieID==movie_id).first()
+            movie.likes = new_likes
+            db.session.commit()
+    return new_likes
 
 
 def search_constraint(array_2d, max_size):
