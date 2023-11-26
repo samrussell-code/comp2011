@@ -74,7 +74,7 @@ def search_constraint(array_2d, max_size):
     return output_list
 
 def search_query(query):
-    movie_results = models.Movie.query.filter(models.Movie.name.contains(str(query.movie_name.data))).all()
+    movie_results = models.Movie.query.filter(models.Movie.name.contains(str(query.movie_name.data))).order_by(models.Movie.likes.desc()).all()
     cast_results = models.CastMember.query.filter(models.CastMember.name.contains(str(query.movie_name.data))).all()    
     user_results = models.User.query.filter(models.User.username.contains(str(query.movie_name.data))).all()
     # if there are more than 10 total results

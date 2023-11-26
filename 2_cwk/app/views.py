@@ -12,7 +12,7 @@ COLUMN_COUNT = 4
 def home():
     # Query all movies ordered by likes in descending order
     app.logger.info('index route request')
-    movies = models.Movie.query.limit(COLUMN_COUNT).all()
+    movies = models.Movie.query.order_by(models.Movie.likes.desc()).limit(COLUMN_COUNT).all()
     search = SearchMovieForm()
     movies = movies_to_json(movies)
     search_results=[]
@@ -55,7 +55,7 @@ def unlike_movie(movie_id):
 @app.route('/movie_card', methods=['GET'])
 def messages():
     page = int(request.args.get('page')) # get the page var from js
-    movies = models.Movie.query.offset((page - 1) * COLUMN_COUNT).limit(COLUMN_COUNT).all()
+    movies = models.Movie.query.order_by(models.Movie.likes.desc()).offset((page - 1) * COLUMN_COUNT).limit(COLUMN_COUNT).all()
     movies = movies_to_json(movies)
     liked_movie_ids = []
     if current_user.is_authenticated:
