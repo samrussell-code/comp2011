@@ -1,4 +1,5 @@
 from app import models, app, db
+import operator
 def movies_to_json(movies):
     return [
         {
@@ -43,13 +44,12 @@ def update_likes(movie_id):
             db.session.commit()
     return new_likes
 
-
-def search_constraint(array_2d, max_size):
+def search_constraint(array_2d, max_size, query):
     '''turns an array of lists into an evenly spaced single list of max size
        this includes constraints to fill out the list with other list elements
        if one sub list is too small'''
     output_list = []
-    
+    # apply the advanced search to each sub list and then the final list
     # maximum size each sublist should have in the final list
     sub_list_max_size = max_size // len(array_2d)
     
@@ -70,7 +70,6 @@ def search_constraint(array_2d, max_size):
             output_list.extend(sublist[:space_per_long_list])
         elif sublist in lists_within_range:
             output_list.extend(sublist)
-    
     return output_list
 
 def search_query(query):
@@ -78,7 +77,7 @@ def search_query(query):
     cast_results = models.CastMember.query.filter(models.CastMember.name.contains(str(query.movie_name.data))).all()    
     user_results = models.User.query.filter(models.User.username.contains(str(query.movie_name.data))).all()
     # if there are more than 10 total results
-    search_results = search_constraint([movie_results,cast_results,user_results],15)
+    search_results = search_constraint([movie_results,cast_results,user_results],15, query)
     #if len(movie_results)+len(cast_results) > 10:
         # we need to remove the number of cast results from movie results, or 5, whichever smaller
     #    movie_results=movie_results[:(min(5,len(cast_results)))]
