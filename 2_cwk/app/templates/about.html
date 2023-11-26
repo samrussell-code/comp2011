@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='ajax_likes.js') }}"></script>
+</head>
+
+<div class="flex-row">
+    <!-- Introduction Card -->
+    <div class="card mt-3 bg-light">
+        <div class="card-body">
+            <h2 class="card-title">Welcome to MoRe!</h2>
+            <p class="card-text">MoRe is a platform where you can explore and discover information about movies, cast members, and user reviews. Whether you're a movie enthusiast or looking for recommendations, MoRe has something for everyone.</p>
+        </div>
+    </div>
+
+    <!-- Search Functionality Card -->
+    <div class="card mt-3 bg-light">
+        <div class="card-body">
+            <h3 class="card-title">Search Movies, Cast, and Profiles</h3>
+            <p class="card-text">Use the search bar to find movies, cast members, and user profiles. Icons for each category are provided for easy identification.</p>
+            <p class="card-text"><img src="{{ url_for('static', filename='clipboard_blue.png') }}" alt="Movie Icon" class="like-icon"> Movies | <img src="{{ url_for('static', filename='star_red.png') }}" alt="Cast Icon" class="like-icon"> Cast | <img src="{{ url_for('static', filename='user_dark.png') }}" alt="Profile Icon" class="like-icon"> Profiles</p>
+        </div>
+    </div>
+
+    <!-- Movie Page Features Card -->
+    <div class="card mt-3 bg-light">
+        <div class="card-body">
+            <h3 class="card-title">Movie Page Features</h3>
+            <p class="card-text">On a movie page, you can view the synopsis, reviews, average rating, and the number of user likes. Clicking on a username in a review allows you to see all reviews by that user. The cast list provides links to cast members' filmographies.</p>
+        </div>
+    </div>
+
+    <!-- Account and Profile Card -->
+    <div class="card mt-3 bg-light">
+        <div class="card-body">
+            <h3 class="card-title">Create an Account</h3>
+            <p class="card-text">Creating an account enables you to log in, view your profile, leave reviews, and like movies to save them on your profile. User passwords are securely hashed and stored.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

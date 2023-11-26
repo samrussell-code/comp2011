@@ -3,22 +3,24 @@
 {% block content %}
 
 <div class="flex-row">
-    <div class="user-profile text-center mt-3">
-        <div class="profile-content">
-            <div class="profile-username">
-                <h2>{{ user.username }}</h2>
-            </div>
-        </div> <!-- end profile-content -->
+    <div class="card bg-light mt-4">
+        <div class="user-profile text-center mt-3">
+            <div class="profile-content">
+                <div class="profile-username">
+                    <h2>{{ user.username }}</h2>
+                </div>
+            </div> <!-- end profile-content -->
+        </div>
     </div>
 </div>
 
 <!-- User Reviews -->
-<div class="card mt-3">
+<div class="card bg-light mt-3">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><h3>User Reviews:</h3></li>
         {% for review in user_reviews %}
             <li class="list-group-item">
-                <p><a href="{{ url_for('movie', movie_id=review.movie.movieID) }}">{{ review.movie.name }}</a>: <strong>{{ review.title }}</strong></p>
+                <p><a class="text-dark" href="{{ url_for('movie', movie_id=review.movie.movieID) }}">{{ review.movie.name }}</a>: <strong>{{ review.title }}</strong></p>
                 <p>Rating: {{ review.rating/10 }}/10</p>
                 <p>{{ review.body }}</p>
             </li>
@@ -28,12 +30,12 @@
 <!-- End User Reviews -->
 
 <!-- Liked Movies -->
-<div class="card mt-3">
+<div class="card bg-light mt-3">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><h3>Liked Movies:</h3></li>
         {% for movie in liked_movies %}
         <li class="list-group-item">
-            <a href="{{ url_for('movie', movie_id=movie.movieID) }}">{{ movie.name }}</a>
+            <a class="text-dark" href="{{ url_for('movie', movie_id=movie.movieID) }}">{{ movie.name }}</a>
         </li>
         {% endfor %}
     </ul>

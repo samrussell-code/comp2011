@@ -72,6 +72,10 @@ def add_movie():
 
     return render_template('add_movie.html', title='Add Movie', add_movie_form=add_movie_form)
 
+@app.route('/about', methods=['GET','POST'])
+def about():
+    return render_template('about.html', title='About')
+
 @app.route('/movie/<int:movie_id>', methods=['GET'])
 def movie(movie_id):
     movie = models.Movie.query.get_or_404(movie_id)
@@ -90,7 +94,7 @@ def movie(movie_id):
     .options(joinedload(models.Review.user))
     .all()
 )
-    return render_template('movie.html', name=f'DB {movie.name}', movie=movie, cast=cast, reviews=reviews, current_user_like_exist=current_user_like_exist)
+    return render_template('movie.html', name=f'DB {movie.name}', title=f'DB {movie.name}', movie=movie, cast=cast, reviews=reviews, current_user_like_exist=current_user_like_exist)
 
 @app.route('/submit_review/<int:movie_id>', methods=['GET', 'POST'])
 @login_required
@@ -104,8 +108,7 @@ def submit_review(movie_id):
             db.session.commit()
             flash('Review submitted successfully!', 'success')
         return redirect(url_for('movie', movie_id=movie_id))
-
-    return render_template('submit_review.html', form=form, movie_id=movie_id,  movie=movie)
+    return render_template('submit_review.html', form=form, movie_id=movie_id,  movie=movie, title=str("Review: "+movie.name))
 
 @app.route('/user/<int:user_id>', methods=['GET'])
 def user(user_id):
@@ -115,8 +118,8 @@ def user(user_id):
     liked_movies = []
     for like in user_likes:
         liked_movies.append(models.Movie.query.filter(models.Movie.movieID == like.movie_id).first())
-
-    return render_template('user.html', user=user, user_reviews=user_reviews, liked_movies=liked_movies)
+    title = user.username if user.userID != current_user.userID else 'My Profile'
+    return render_template('user.html', user=user, title=title, user_reviews=user_reviews, liked_movies=liked_movies)
 
 @app.route('/cast_member/<int:cast_member_id>', methods=['GET'])
 def cast_member(cast_member_id):
@@ -125,7 +128,7 @@ def cast_member(cast_member_id):
     movies = []
     for moviecast_relation in movie_id_list:
         movies.append(models.Movie.query.filter(models.Movie.movieID==moviecast_relation.movie_id).first())
-    return render_template('cast_member.html', name=f'DB {cast_member.name}', cast_member=cast_member, movies=movies)
+    return render_template('cast_member.html', name=f'DB {cast_member.name}', cast_member=cast_member, movies=movies, title=f'DB {cast_member.name}')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -154,7 +157,7 @@ def register():
                 flash('Registration successful! You can now log in.', 'success') 
                 return redirect(url_for('login'))
 
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, title='Register')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -173,7 +176,7 @@ def login():
         else:
             flash('Invalid username or password', 'error')
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, title='Login')
 
 @app.route('/logout')
 @login_required

@@ -1,4 +1,8 @@
 body {
+    background-image: url('background.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     font-family: "Gill Sans", sans-serif;
 }
 
