@@ -23,9 +23,9 @@
                     <div class="card-body-r">
                         <!-- Display the like icon image to the right of the title -->
                         {% if current_user_like_exist %}
-                        <img src="../static/likes_ico_liked.png" alt="Likes" class="like-icon {% if current_user_like_exist %}liked{% endif %}" data-movie-id="{{ movie.movieID }}">
+                        <img tabindex="0" src="../static/likes_ico_liked.png" alt="Likes" class="like-icon {% if current_user_like_exist %}liked{% endif %}" data-movie-id="{{ movie.movieID }}">
                         {% else %} <!-- i know -->
-                        <img src="../static/likes_ico.png" alt="Likes" class="like-icon {% if current_user_like_exist %}liked{% endif %}" data-movie-id="{{ movie.movieID }}">
+                        <img tabindex="0" src="../static/likes_ico.png" alt="Likes" class="like-icon {% if current_user_like_exist %}liked{% endif %}" data-movie-id="{{ movie.movieID }}">
                         {% endif %}
                     
                         <!-- Display the number of likes -->

@@ -118,7 +118,10 @@ def user(user_id):
     liked_movies = []
     for like in user_likes:
         liked_movies.append(models.Movie.query.filter(models.Movie.movieID == like.movie_id).first())
-    title = user.username if user.userID != current_user.userID else 'My Profile'
+    if current_user.is_authenticated:
+        title = user.username if user.userID != current_user.userID else 'My Profile'
+    else:
+        title = user.username
     return render_template('user.html', user=user, title=title, user_reviews=user_reviews, liked_movies=liked_movies)
 
 @app.route('/cast_member/<int:cast_member_id>', methods=['GET'])

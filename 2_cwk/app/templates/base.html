@@ -53,10 +53,10 @@
                           {% if title == "Register" %}
                               <a class="dropdown-item text-warning nav-link disabled" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='register.jpeg') }}" alt="Register" class="like-icon"> Register</a>
                           {% else %}
-                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='register.jpeg') }}" alt="Register" class="like-icon"> Register</a>
+                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='register.jpeg') }}" alt="Register account" class="like-icon"> Register</a>
                           {% endif %}
                           {% if current_user.is_authenticated %}
-                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.jpeg') }}" alt="Logout" class="like-icon"> Logout</a>
+                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.jpeg') }}" alt="Logout of account" class="like-icon"> Logout</a>
                               {% if title == "My Profile" %}
                                   <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('user', user_id=current_user.userID) }}"><img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon"> Profile</a>
                               {% else %}
@@ -66,7 +66,7 @@
                               {% if title == "Login" %}
                                   <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.jpeg') }}" alt="Login" class="like-icon"> Login</a>
                               {% else %}
-                                  <a class="dropdown-item bg-dark nav-link" href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.jpeg') }}" alt="Login" class="like-icon"> Login</a>
+                                  <a class="dropdown-item bg-dark nav-link" href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.jpeg') }}" alt="Login to account" class="like-icon"> Login</a>
                               {% endif %}
                           {% endif %}
                       </div>

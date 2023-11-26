@@ -44,4 +44,10 @@ $(document).ready(function () {
             $(e.target).find(".like-icon").on("click", handleLikeButtonClick);
         }
     });
+    $('.like-icon').keydown(function(event) {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            // Trigger the click event when Enter is pressed
+            $(this).click();
+        }
+    });
 });

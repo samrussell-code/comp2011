@@ -35,13 +35,13 @@
                 <li class="list-group-item">
                     <div class="d-flex justify-content-between align-items-center">
                         {% if result.__class__.__name__ == 'Movie' %}
-                            <a class="text-dark" href="{{ url_for('movie', movie_id=result.movieID) }}">{{ result.name }}</a>
+                            <a tabindex="0" class="text-dark" href="{{ url_for('movie', movie_id=result.movieID) }}">{{ result.name }}</a>
                             <img src="{{ url_for('static', filename='clipboard_blue.png') }}" alt="Movie" class="like-icon" data-movie-id="{{ result.movieID }}">
                         {% elif result.__class__.__name__ == 'CastMember' %}
-                            <a class="text-dark" href="{{ url_for('cast_member', cast_member_id=result.castMemberID) }}">{{ result.name }}</a>
+                            <a tabindex="0" class="text-dark" href="{{ url_for('cast_member', cast_member_id=result.castMemberID) }}">{{ result.name }}</a>
                             <img src="{{ url_for('static', filename='star_red.png') }}" alt="Cast Member" class="like-icon" data-movie-id="{{ result.movieID }}">
                         {% elif result.__class__.__name__ == 'User' %}
-                            <a class="text-dark" href="{{ url_for('user', user_id=result.userID) }}">{{ result.username }}</a>
+                            <a tabindex="0" class="text-dark" href="{{ url_for('user', user_id=result.userID) }}">{{ result.username }}</a>
                             <img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon" data-movie-id="{{ result.movieID }}">
                         {% endif %}
                     </div>
