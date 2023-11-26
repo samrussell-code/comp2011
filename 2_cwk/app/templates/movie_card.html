@@ -14,9 +14,9 @@
                         <div class="card-body-r">
                             <!-- Display the like icon image to the right of the title -->
                             {% if movie.id in liked_movie_ids %}
-                            <img src="{{ url_for('static', filename='likes_ico_liked.png') }}" alt="{{ movie.name }} Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
+                            <img tabindex="0" src="{{ url_for('static', filename='likes_ico_liked.png') }}" alt="{{ movie.name }} Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
                             {% else %}
-                            <img src="{{ url_for('static', filename='likes_ico.png') }}" alt="{{ movie.name }} Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
+                            <img tabindex="0" src="{{ url_for('static', filename='likes_ico.png') }}" alt="{{ movie.name }} Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
                             {% endif %}
         
                             <!-- Display the number of likes -->

@@ -14,12 +14,12 @@
                 <h2>{{ movie.name }} ({% if movie.release_date %}{{ movie.release_date.strftime("%B %Y") }}{% else %} No release date found...{% endif %})</h2>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col">
                     <div class="card-body-l">
                         <span class="likes-count">{{ movie.rating }} / 10</span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col">
                     <div class="card-body-r">
                         <!-- Display the like icon image to the right of the title -->
                         {% if current_user_like_exist %}
@@ -27,7 +27,6 @@
                         {% else %} <!-- i know -->
                         <img tabindex="0" src="../static/likes_ico.png" alt="Likes" class="like-icon {% if current_user_like_exist %}liked{% endif %}" data-movie-id="{{ movie.movieID }}">
                         {% endif %}
-                    
                         <!-- Display the number of likes -->
                         <span class="likes-count" id="likes-count-{{ movie.movieID }}">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
                     </div>

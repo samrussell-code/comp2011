@@ -94,7 +94,7 @@ def movie(movie_id):
     .options(joinedload(models.Review.user))
     .all()
 )
-    return render_template('movie.html', name=f'DB {movie.name}', title=f'DB {movie.name}', movie=movie, cast=cast, reviews=reviews, current_user_like_exist=current_user_like_exist)
+    return render_template('movie.html', name=f'DB {movie.name}', title=movie.name, movie=movie, cast=cast, reviews=reviews, current_user_like_exist=current_user_like_exist)
 
 @app.route('/submit_review/<int:movie_id>', methods=['GET', 'POST'])
 @login_required
@@ -131,7 +131,7 @@ def cast_member(cast_member_id):
     movies = []
     for moviecast_relation in movie_id_list:
         movies.append(models.Movie.query.filter(models.Movie.movieID==moviecast_relation.movie_id).first())
-    return render_template('cast_member.html', name=f'DB {cast_member.name}', cast_member=cast_member, movies=movies, title=f'DB {cast_member.name}')
+    return render_template('cast_member.html', name=f'DB {cast_member.name}', cast_member=cast_member, movies=movies, title=cast_member.name)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
