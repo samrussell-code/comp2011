@@ -23,50 +23,58 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <div class="container-fluid">
-    <h1><span><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo for MoRe website, links to home page" class="like-icon navbar-expand"><a class="navbar-brand" href="/" aria-label="link for home page" alt="link for home page logo">MoRe</a></span></h1>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon small"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav align-content-end">
-            {% if title == "Home" %}
-            <li class="nav-item disabled"><a class="nav-link text-warning disabled" href="/">Home <span class="sr-only">(current)</span></a></li>
-            {% else %}
-            <li class="nav-item"><a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a></li>
-            {% endif %}
-            <li class="nav-item dropdown bg-dark">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Account
-              </a>
-              <div class="dropdown-menu bg-dark border-0" aria-labelledby="navbarDropdownMenuLink">
-                {% if title == "Register" %}
-                <a class="dropdown-item text-warning nav-link disabled" href="{{ url_for('register') }}">Register</a>
-                {% else %}
-                <a class="dropdown-item bg-dark nav-link" href="{{ url_for('register') }}">Register</a>
-                {% endif %}
+    <div class="container-fluid">
+        <!-- Logo on the left -->
+        <h1><span><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo for MoRe website, links to home page" class="like-icon navbar-expand"><a class="navbar-brand" href="/" aria-label="link for home page" alt="link for home page logo">MoRe</a></span></h1>
 
-                {% if current_user.is_authenticated %}
-                    <!-- If the user is authenticated, show the Logout link -->
-                    <a class="dropdown-item bg-dark nav-link" href="{{ url_for('logout') }}">Logout</a>
-                    {% if title == "My Profile" %}
-                    <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('user', user_id=current_user.userID) }}">Profile<img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon"></a>
-                    {% else %}
-                    <a class="dropdown-item bg-dark nav-link" href="{{ url_for('user', user_id=current_user.userID) }}">Profile<img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon"></a>
-                    {% endif %}
-                {% else %}
-                    <!-- If the user is not authenticated, show the Login link -->
-                    {% if title == "Login" %}
-                    <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('login') }}">Login</a>
-                    {% else %}
-                    <a class="dropdown-item bg-dark nav-link" href="{{ url_for('login') }}">Login</a>
-                    {% endif %}
-
-                {% endif %}
-              </div>
-            </li>
-        </ul>
-  </div>
+        <!-- Toggler button for small screens -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon small"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Navbar items on the right -->
+          <div class="ml-auto">
+              <ul class="navbar-nav">
+                  {% if title == "Home" %}
+                      <li class="nav-item disabled"><a class="nav-link text-warning disabled" href="/">Home <span class="sr-only">(current)</span></a></li>
+                  {% else %}
+                      <li class="nav-item"><a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a></li>
+                  {% endif %}
+                  <li class="nav-item dropdown bg-dark">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Account
+                      </a>
+                      <div class="dropdown-menu bg-dark border-0" aria-labelledby="navbarDropdownMenuLink">
+                          {% if title == "Register" %}
+                              <a class="dropdown-item text-warning nav-link disabled" href="{{ url_for('register') }}">Register</a>
+                          {% else %}
+                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('register') }}">Register</a>
+                          {% endif %}
+                          {% if current_user.is_authenticated %}
+                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('logout') }}">Logout</a>
+                              {% if title == "My Profile" %}
+                                  <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('user', user_id=current_user.userID) }}"><img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon"> Profile</a>
+                              {% else %}
+                                  <a class="dropdown-item bg-dark nav-link" href="{{ url_for('user', user_id=current_user.userID) }}"><img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon"> Profile</a>
+                              {% endif %}
+                          {% else %}
+                              {% if title == "Login" %}
+                                  <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('login') }}">Login</a>
+                              {% else %}
+                                  <a class="dropdown-item bg-dark nav-link" href="{{ url_for('login') }}">Login</a>
+                              {% endif %}
+                          {% endif %}
+                      </div>
+                  </li>
+                  {% if title == "About" %}
+                  <li class="nav-item"><a class="nav-link disabled text-warning" href="/about">About <span class="sr-only">(current)</span></a></li>
+                  {% else %}
+                  <li class="nav-item"><a class="nav-link" href="/about">About <span class="sr-only">(current)</span></a></li>
+                  {% endif %}
+              </ul>
+          </div>
+    </div>
+    </div>
 </nav>
 <script>
     var likeIconUrl = "{{ url_for('static', filename='likes_ico.png') }}";
