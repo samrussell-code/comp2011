@@ -1,7 +1,7 @@
 from flask import jsonify, redirect, render_template, flash, request, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, models, db
-from app.mUtils import movies_to_json, search_query, update_likes
+from app.mUtils import movies_to_json, search_query, update_likes, calculate_rating
 from .forms import AddMovieForm, ReviewForm, SearchMovieForm, LoginForm, RegisterForm
 from sqlalchemy.orm import joinedload
 import scraper
@@ -93,8 +93,10 @@ def movie(movie_id):
     .filter(models.Review.movie_id == movie_id)
     .options(joinedload(models.Review.user))
     .all()
+    
 )
-    return render_template('movie.html', name=f'DB {movie.name}', title=movie.name, movie=movie, cast=cast, reviews=reviews, current_user_like_exist=current_user_like_exist)
+    rating = calculate_rating(movie_id)
+    return render_template('movie.html', name=f'DB {movie.name}', title=movie.name, movie=movie, cast=cast, reviews=reviews, current_user_like_exist=current_user_like_exist, rating=rating)
 
 @app.route('/submit_review/<int:movie_id>', methods=['GET', 'POST'])
 @login_required

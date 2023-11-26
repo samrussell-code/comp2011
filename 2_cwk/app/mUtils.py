@@ -10,6 +10,26 @@ def movies_to_json(movies):
         for movie in movies
     ]
 
+def update_rating(movie_id, new_rating):
+    with app.app_context():
+        movie = db.session.query(models.Movie).filter(models.Movie.movieID==movie_id).first()
+        movie.rating = new_rating
+        db.session.commit()
+
+def calculate_rating(movie_id):
+    rating = -1
+    reviews = models.Review.query.filter(models.Review.movie_id == movie_id).all()
+    movie = models.Movie.query.filter(models.Movie.movieID == movie_id).first()
+    old_rating = movie.rating
+    rating_sum = 0
+    for review in reviews:
+        rating_sum+=review.rating
+    if reviews:
+        rating = rating_sum / len(reviews)
+    if old_rating != rating:
+        update_rating(movie_id, rating)
+    return rating
+
 def update_likes(movie_id):
     '''Since movies store the like counter in their table we need to update this occasionally to match the new user like count
     returns the new like count'''
