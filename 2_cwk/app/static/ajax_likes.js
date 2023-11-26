@@ -25,8 +25,8 @@ $(document).ready(function () {
 
                 // Toggle the like button icon and update the image source
                 $likeIcon.toggleClass('liked');
-                var newImageSrc = isLiked ? 'likes_ico.png' : 'likes_ico_liked.png';
-                $likeIcon.attr('src', 'static/' + newImageSrc);
+                var newImageSrc = isLiked ? likeIconUrl : likedIconUrl;
+                $likeIcon.attr('src', newImageSrc);
             },
             error: function (error) {
                 console.log(error);
