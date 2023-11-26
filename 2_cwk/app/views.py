@@ -8,7 +8,11 @@ import scraper
 
 COLUMN_COUNT = 4
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET','POST'])
+def index():
+    return render_template('index.html', title='Home')
+
+@app.route('/home', methods=['GET', 'POST'])
 def home():
     # Query all movies ordered by likes in descending order
     app.logger.info('index route request')
@@ -23,7 +27,7 @@ def home():
             liked_movie_ids.append(movie.movie_id)
     if search.validate_on_submit():
         search_results=search_query(search)
-    return render_template('home.html', title='Home', movies=movies,search=search, search_results=search_results, liked_movie_ids=liked_movie_ids)
+    return render_template('home.html', title='Main Page', movies=movies,search=search, search_results=search_results, liked_movie_ids=liked_movie_ids)
 
 @app.route('/like_movie/<int:movie_id>', methods=['POST'])
 @login_required
@@ -72,9 +76,7 @@ def add_movie():
 
     return render_template('add_movie.html', title='Add Movie', add_movie_form=add_movie_form)
 
-@app.route('/about', methods=['GET','POST'])
-def about():
-    return render_template('about.html', title='About')
+
 
 @app.route('/movie/<int:movie_id>', methods=['GET'])
 def movie(movie_id):
