@@ -27,4 +27,17 @@
 </div>
 <!-- End User Reviews -->
 
+<!-- Liked Movies -->
+<div class="card mt-3">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h3>Liked Movies:</h3></li>
+        {% for movie in liked_movies %}
+        <li class="list-group-item">
+            <a href="{{ url_for('movie', movie_id=movie.movieID) }}">{{ movie.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- End Liked Movies-->
 {% endblock %}

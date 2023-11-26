@@ -1,12 +1,10 @@
 from flask import jsonify, redirect, render_template, flash, request, url_for
 from flask_login import login_user, logout_user, current_user, login_required
-from sqlalchemy import update
 from app import app, models, db
-from datetime import datetime
 from app.mUtils import movies_to_json, search_query, update_likes
-from .forms import AddMovieForm, DeleteForm, ReviewForm, SearchMovieForm, LoginForm, RegisterForm
+from .forms import AddMovieForm, ReviewForm, SearchMovieForm, LoginForm, RegisterForm
 from sqlalchemy.orm import joinedload
-import scraper, json, logging
+import scraper
 
 COLUMN_COUNT = 4
 
@@ -77,7 +75,9 @@ def add_movie():
 @app.route('/movie/<int:movie_id>', methods=['GET'])
 def movie(movie_id):
     movie = models.Movie.query.get_or_404(movie_id)
-    current_user_like_exist = models.UserLike.query.filter(models.UserLike.user_id==current_user.userID, models.UserLike.movie_id==movie_id).first()
+    current_user_like_exist = []
+    if current_user.is_authenticated:
+        current_user_like_exist = models.UserLike.query.filter(models.UserLike.user_id==current_user.userID, models.UserLike.movie_id==movie_id).first()
     cast_id_list = models.MovieCastMember.query.filter(models.MovieCastMember.movie_id==movie_id).all()
     cast = []
     for moviecast_relation in cast_id_list:
@@ -111,8 +111,12 @@ def submit_review(movie_id):
 def user(user_id):
     user = models.User.query.get_or_404(user_id)
     user_reviews = models.Review.query.filter(models.Review.user_id == user_id).all()
+    user_likes = models.UserLike.query.filter(models.UserLike.user_id == user_id).all()
+    liked_movies = []
+    for like in user_likes:
+        liked_movies.append(models.Movie.query.filter(models.Movie.movieID == like.movie_id).first())
 
-    return render_template('user.html', user=user, user_reviews=user_reviews)
+    return render_template('user.html', user=user, user_reviews=user_reviews, liked_movies=liked_movies)
 
 @app.route('/cast_member/<int:cast_member_id>', methods=['GET'])
 def cast_member(cast_member_id):

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, IntegerField, RadioField, StringField, TextAreaField, SelectField, SubmitField, PasswordField
-from wtforms.validators import DataRequired, NumberRange, Optional, EqualTo
+from wtforms import IntegerField, StringField, TextAreaField, SelectField, SubmitField, PasswordField
+from wtforms.validators import DataRequired, NumberRange, EqualTo
 
 # form for adding an income or expenditure entry
 
@@ -9,6 +9,14 @@ class AddMovieForm(FlaskForm):
 
 class SearchMovieForm(FlaskForm):
     movie_name = StringField('search', validators=[DataRequired()])
+    sort_options = SelectField('Sort By', choices=[('alphabetical', 'Alphabetical'),
+            ('rating', 'Rating'),
+            ('likes', 'Likes'),
+            ('release_date_old', 'Release Date (Old)'),
+            ('release_date_new', 'Release Date (New)'),
+            ('reviews', 'Reviews')
+        ],
+        default='alphabetical')
 
 class DeleteForm(FlaskForm):
     submit = SubmitField('submit')

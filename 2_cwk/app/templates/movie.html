@@ -29,7 +29,7 @@
                         {% endif %}
                     
                         <!-- Display the number of likes -->
-                        <span class="likes-count" id="likes-count-{{ movie.movieID }}">{{ movie.likes }}</span>
+                        <span class="likes-count" id="likes-count-{{ movie.movieID }}">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
                     </div>
                 </div>
             </div>
