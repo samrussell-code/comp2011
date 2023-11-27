@@ -24,7 +24,7 @@ class RegisterForm(FlaskForm):
 
 class ReviewForm(FlaskForm):
     # rating is 0-100 intfield so i can constrain later to a 1dp float value between 0 and 10.0
-    rating = IntegerField('Rating (0-100)', validators=[DataRequired(), NumberRange(0, 100)])
+    rating = IntegerField('Rating (1-100)', validators=[DataRequired(), NumberRange(1, 100)])
     title = StringField('Title')
     body = TextAreaField('Description')
     submit = SubmitField('Submit Review')

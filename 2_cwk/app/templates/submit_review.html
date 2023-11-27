@@ -10,7 +10,7 @@
                 {{ form.hidden_tag() }}
                 
                 <div class="mb-3">
-                    <label for="{{ form.rating.id }}" class="form-label">Rating:</label>
+                    <label for="{{ form.rating.id }}" class="form-label">Rating (1-100):</label>
                     {{ form.rating(class_='form-control', placeholder='Enter your rating') }}
                     {% for error in form.rating.errors %}
                     <div class="alert alert-danger" role="alert">

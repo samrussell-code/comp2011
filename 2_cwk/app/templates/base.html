@@ -18,7 +18,7 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-        <h1><span><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo for MoRe website, links to home page" class="like-icon navbar-expand"><a class="navbar-brand" href="/" aria-label="link for home page" alt="link for home page logo">MoRe</a></span></h1>
+        <h1><span><a href="/"><img src="{{ url_for('static', filename='logo_name.png') }}" href="/" alt="Logo for MoRe website, links to home page" class="logo-icon navbar-expand"></a></span></h1>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon small"></span>
         </button>
@@ -41,12 +41,12 @@
                       </a>
                       <div class="dropdown-menu bg-dark border-0" aria-labelledby="navbarDropdownMenuLink">
                           {% if title == "Register" %}
-                              <a class="dropdown-item text-warning nav-link disabled" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='register.jpeg') }}" alt="Register" class="like-icon"> Register</a>
+                              <a class="dropdown-item text-warning nav-link disabled" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='register.png') }}" alt="Register" class="like-icon"> Register</a>
                           {% else %}
-                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='register.jpeg') }}" alt="Register account" class="like-icon"> Register</a>
+                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='register.png') }}" alt="Register account" class="like-icon"> Register</a>
                           {% endif %}
                           {% if current_user.is_authenticated %}
-                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.jpeg') }}" alt="Logout of account" class="like-icon"> Logout</a>
+                              <a class="dropdown-item bg-dark nav-link" href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.png') }}" alt="Logout of account" class="like-icon"> Logout</a>
                               {% if title == "My Profile" %}
                                   <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('user', user_id=current_user.userID) }}"><img src="{{ url_for('static', filename='user.png') }}" alt="User" class="like-icon"> Profile</a>
                               {% else %}
@@ -54,9 +54,9 @@
                               {% endif %}
                           {% else %}
                               {% if title == "Login" %}
-                                  <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.jpeg') }}" alt="Login" class="like-icon"> Login</a>
+                                  <a class="dropdown-item bg-dark text-warning nav-link disabled" href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.png') }}" alt="Login" class="like-icon"> Login</a>
                               {% else %}
-                                  <a class="dropdown-item bg-dark nav-link" href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.jpeg') }}" alt="Login to account" class="like-icon"> Login</a>
+                                  <a class="dropdown-item bg-dark nav-link" href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.png') }}" alt="Login to account" class="like-icon"> Login</a>
                               {% endif %}
                           {% endif %}
                       </div>
