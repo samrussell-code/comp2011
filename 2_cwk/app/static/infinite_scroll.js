@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hideLoading(); // no longer waiting for server response 
                 console.log('Fetched page ' + (page - 1));
                 // the page needs to be vertically full on first load so that the user can scroll to trigger the content load
-                if (page%7!=0){ // arbitrarily extend the number of rows fetched so enough is loaded initially to fill screen
+                if (page%10!=0){ // arbitrarily extend the number of rows fetched so enough is loaded initially to fill screen
                     fetchMessages();
                 }
             });
