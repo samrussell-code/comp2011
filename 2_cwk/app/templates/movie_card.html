@@ -12,17 +12,14 @@
                             <h3><a class="text-dark" href="{{ url_for('movie', movie_id=movie.id) }}">{{ movie.name }}</a></h3>
                         </div>
                         <div class="card-body-r">
-                            <!-- Display the like icon image to the right of the title -->
                             {% if movie.id in liked_movie_ids %}
                             <img tabindex="0" src="{{ url_for('static', filename='likes_ico_liked.png') }}" alt="{{ movie.name }} Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
                             {% else %}
                             <img tabindex="0" src="{{ url_for('static', filename='likes_ico.png') }}" alt="{{ movie.name }} Likes" class="like-icon {% if movie.id in liked_movie_ids %}liked{% endif %}" data-movie-id="{{ movie.id }}">
                             {% endif %}
         
-                            <!-- Display the number of likes -->
                             <span class="likes-count" id="likes-count-{{ movie.id }}">{% if movie.likes %}{{ movie.likes }}{% else %}0{% endif %}</span>
         
-                            <!-- Response location for the like button click -->
                         </div>
                     </div>
                 </div>

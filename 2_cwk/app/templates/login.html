@@ -8,17 +8,14 @@
             <h2>Login</h2>
             <form action="{{ url_for('login') }}" method="post">
                 {{ form.hidden_tag() }}
-                
                 <div class="mb-3">
                     <label for="{{ form.username.id }}" class="form-label">Username:</label>
                     {{ form.username(class_='form-control', placeholder='Enter your username') }}
                 </div>
-                
                 <div class="mb-3">
                     <label for="{{ form.password.id }}" class="form-label">Password:</label>
                     {{ form.password(class_='form-control', placeholder='Enter your password') }}
-                </div>
-                
+                </div>   
                 <button type="submit" class="btn btn-dark">Login</button>
             </form>
         </div>

@@ -20,9 +20,9 @@ body {
     height: 100px;
     min-width: 175px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Increased margin at the bottom */
+    margin-bottom: 20px; 
     text-align: center;
-    overflow: hidden; /* Hide overflowing content */
+    overflow: hidden; 
 }
 
 .movie-content {
@@ -55,28 +55,32 @@ body {
 
 .card-body-l {
     display: flex;
-    align-items: center; /* Center the items vertically */
-    justify-content: flex-start; /* Push items to the right */
-    height: 50px; /* Adjust the height as needed */
+    align-items: center; 
+    justify-content: flex-start; 
+    height: 50px; 
     margin-left: 10%;
+}
+
+ul#menu li {
+    display: inline;
 }
 
 .card-body-r {
     display: flex;
-    align-items: center; /* Center the items vertically */
-    justify-content: flex-end; /* Push items to the right */
-    height: 50px; /* Adjust the height as needed */
+    align-items: center; 
+    justify-content: flex-end; 
+    height: 50px; 
     margin-right: 10%;
 }
 
 .like-icon {
-    width: 20px; /* Adjust the width of the like icon as needed */
-    height: 20px; /* Adjust the height of the like icon as needed */
-    margin-left: 5px; /* Adjust the margin to separate the icon from the title */
+    width: 20px; 
+    height: 20px; 
+    margin-left: 5px; 
 }
 
 .likes-count {
-    margin-left: 5px; /* Adjust the margin to separate the number of likes from the icon */
+    margin-left: 5px; 
 }
 
 .search-form {
@@ -93,15 +97,15 @@ body {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 20px; /* Adjust the width as needed */
-    height: 50px; /* Adjust the height as needed */
-    background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
-    border-radius: 5px; /* Rounded corners */
+    width: 50px; 
+    height: 50px; 
+    background: transparent;
+    border-radius: 5px; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #loading-container img {
-    width: 100%; /* Make the image fill the container */
+    width: 100%;
 }

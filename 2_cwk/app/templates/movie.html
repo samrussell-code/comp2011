@@ -8,10 +8,13 @@
 
 
 <div class="flex-row">
-    <div class="movie-card text-center mt-3">
+    <div class="movie-card text-center mt-lg-2 h-auto">
         <div class="movie-content">
             <div class="movie-title">
                 <h2>{{ movie.name }} ({% if movie.release_date %}{{ movie.release_date.strftime("%B %Y") }}{% else %} No release date found...{% endif %})</h2>
+            </div>
+            <div class="row justify-content-center">
+                <p class="text-dark"><em>{{ genres|map(attribute='name')|join(', ') }}</em></p>
             </div>
             <div class="row">
                 <div class="col">
