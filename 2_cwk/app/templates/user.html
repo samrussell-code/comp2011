@@ -23,6 +23,11 @@
                 <p><a class="text-dark" href="{{ url_for('movie', movie_id=review.movie.movieID) }}">{{ review.movie.name }}</a>: <strong>{{ review.title }}</strong></p>
                 <p>Rating: {{ review.rating/10 }}/10</p>
                 <p>{{ review.body }}</p>
+                {% if review.user_id == current_user.userID %} {# Check if the review belongs to the current user #}
+                    <form method="post" action="{{ url_for('delete_review', review_id=review.reviewID) }}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
