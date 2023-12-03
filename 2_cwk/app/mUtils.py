@@ -30,7 +30,7 @@ def calculate_rating(movie_id):
     for review in reviews:
         rating_sum+=review.rating
     if reviews:
-        rating = rating_sum / len(reviews)
+        rating = round(rating_sum / len(reviews), 1)
     if old_rating != rating:
         update_rating(movie_id, rating)
     return rating

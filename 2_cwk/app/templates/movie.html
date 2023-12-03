@@ -67,7 +67,7 @@
                 {% for review in reviews %}
                     <li class="list-group-item">
                         <p><a class="text-dark" href="{{ url_for('user', user_id=review.user.userID) }}">{{ review.user.username }}</a>: <strong>{{ review.title }}</strong></p>
-                        <p>Rating: {{ review.rating }}</p>
+                        <p>Rating: {{ review.rating/10 }} / 10</p>
                         <p>{{ review.body }}</p>
                         {% if review.user_id == current_user.userID %}
                         <form method="post" action="{{ url_for('delete_review', review_id=review.reviewID) }}">
